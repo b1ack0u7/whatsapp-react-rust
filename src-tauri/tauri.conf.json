@@ -55,11 +55,13 @@
     },
     "windows": [
       {
+        "center": true,
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
-        "title": "WhatsApp",
-        "width": 800
+        "height": 650,
+        "resizable": false,
+        "width": 1050,
+        "title": "WhatsApp-Demo",
+        "hiddenTitle": true
       }
     ]
   }
