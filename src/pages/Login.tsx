@@ -1,9 +1,14 @@
-import React from 'react'
+import Draggable from '../components/ui/Draggable';
+import BG from '../assets/bg-chat.png';
 
 const Login = () => {
   return (
-    <div className='select-none'>
-      Login
+    <div className='flex flex-col h-screen'>
+      <Draggable />
+
+      <div className='flex-1 select-none bg-wht'>
+        <p>Hola</p>
+      </div>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
+import Home from '../pages/Home'
 import Login from '../pages/Login'
 
 const AppRouter = () => {
@@ -8,7 +9,8 @@ const AppRouter = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />}/>
-          <Route path="/" element={<Navigate replace to='/login'/>}/>
+          <Route path="/home" element={<Home />}/>
+          <Route path="/" element={<Navigate replace to='/home'/>}/>
         </Routes>
       </BrowserRouter>
     </>

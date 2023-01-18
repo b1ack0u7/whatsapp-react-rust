@@ -12,7 +12,12 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "http": {
+        "all": true
+      },
+      "window": {
+        "startDragging": true
+      }
     },
     "bundle": {
       "active": true,
@@ -58,10 +63,12 @@
         "center": true,
         "fullscreen": false,
         "height": 650,
+        "hiddenTitle": true,
         "resizable": false,
-        "width": 1050,
+        "theme": "Light",
         "title": "WhatsApp-Demo",
-        "hiddenTitle": true
+        "titleBarStyle": "Overlay",
+        "width": 1050
       }
     ]
   }
