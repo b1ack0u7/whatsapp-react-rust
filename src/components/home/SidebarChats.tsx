@@ -5,8 +5,8 @@ const SidebarChats = () => {
   const [inputSearch, setInputSearch] = useState<string>('');
 
   return (
-    <div className='w-[410px] h-full bg-white'>
-      <div className="flex items-center mx-4 my-2 px-4 py-2 gap-x-4 bg-wht rounded-lg">
+    <div className='flex flex-col w-[370px] h-full bg-white'>
+      <div className="flex items-center mx-4 my-2 px-4 py-2 gap-x-4 bg-uiBG rounded-lg">
         <i className={`fi ${inputSearch.length == 0 ? 'fi-br-search text-gray-500' : 'fi-br-arrow-left text-emerald-400'} mr-2 text-[14px] `}/>
         <input 
           className='w-full appearance-none text-[14px] text-righ focus:outline-none bg-transparent'
@@ -18,20 +18,25 @@ const SidebarChats = () => {
       </div>
 
       <hr />
-
-      <div className="flex flex-col">
+      
+      <div className="flex flex-col h-[538px] overflow-y-scroll">
         {
-          Array(3).fill(0).map(() => 
+          Array(6).fill(0).map(() => 
             <ItemChat />
           )
         }
+
+        <div className="flex items-center justify-center text-gray-600">
+          <i className="fi fi-sr-lock text-[12px] mt-1 -mr-1 "/>
+          <p className="m-3 text-[12px]">Tus mensajes personales están cifrados con AES256</p>
+        </div>
       </div>
     </div>
   )
 }
 
 const ItemChat = () => {
-  const [isHovered, setIsHovered] = useState<boolean>(true);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
     <div
@@ -64,10 +69,8 @@ const ItemChat = () => {
                   <motion.i
                     className="absolute left-1 opacity-0 fi fi-br-angle-small-down text-gray-500 hover:text-gray-700"
                     animate={{opacity: isHovered ? 1 : 0, x: isHovered ? -20 : 0}}
-                    transition={{}}
                   />
                 }
-
               </AnimatePresence>
             </div>
           </div>

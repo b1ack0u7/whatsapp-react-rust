@@ -6,7 +6,7 @@ const Login = () => {
     <div className='flex flex-col h-screen'>
       <Draggable />
 
-      <div className='flex-1 select-none bg-wht'>
+      <div className='flex-1 select-none bg-uiBG'>
         <p>Hola</p>
       </div>
     </div>

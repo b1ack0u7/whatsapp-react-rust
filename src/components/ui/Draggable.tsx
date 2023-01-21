@@ -4,7 +4,7 @@ import { appWindow } from '@tauri-apps/api/window';
 const Draggable = () => {
   return (
     <div
-      className='bg-wht h-[58px]'
+      className='bg-uiBG h-[58px]'
       id='draggable-zone'
       onMouseDown={async(e) => {
         e.preventDefault();

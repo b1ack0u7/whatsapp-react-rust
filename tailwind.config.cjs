@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "wht": "#edeff1" 
+        "uiBG": "#edeff1",
+        "chatBG": "#f3f0ea"
       }
     },
   },
