@@ -49,7 +49,7 @@ const InitialMessage = ({animation}: {animation: any}) => {
       <div className='w-[25px] h-[25px] rounded-full bg-gray-400'/>
 
       <div
-        className='relative pt-2 pl-3 bg-white rounded-r-lg rounded-bl-lg'
+        className='relative pt-2 pl-3 bg-white rounded-r-lg rounded-bl-lg shadow-sm'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
