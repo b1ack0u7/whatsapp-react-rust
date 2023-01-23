@@ -50,13 +50,12 @@ const InitialMessage = ({animation}: {animation: any}) => {
   return (
     <div className='flex gap-x-4 mb-[2px]'>
       <div 
-        className='relative pt-2 pl-3 bg-white rounded-l-lg rounded-br-lg'
+        className='relative pt-2 pl-3 bg-outgoingMessageBG rounded-l-lg rounded-br-lg mr-10 shadow-sm'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className='absolute -right-4 top-0 w-0 h-0 border-l-white border-t-0 border-l-[20px] border-b-[15px] border-b-transparent rounded-tr-md'/>
+        <div className='absolute -right-4 top-0 w-0 h-0 border-l-outgoingMessageBG border-t-0 border-l-[20px] border-b-[15px] border-b-transparent rounded-tr-md'/>
         <div className='relative'>
-          <p className='text-[14px] font-medium text-green-500 hover:underline hover:cursor-pointer'>Axel Hernandez Montes de Oca</p>
           <AnimatePresence mode="wait">
             { isHovered &&
               <motion.i
@@ -75,8 +74,6 @@ const InitialMessage = ({animation}: {animation: any}) => {
           <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>7:58 p. m.</p>
         </div>
       </div>
-
-      <div className='w-[25px] h-[25px] rounded-full bg-gray-400'/>
     </div>
   )
 }
@@ -88,7 +85,7 @@ const IndividualMessage = ({animation}: {animation: any}) => {
   return (
     <div className='flex'>
       <div 
-        className='relative flex gap-x-[6px] mr-10 pt-[6px] pb-[2px] pl-3 bg-white rounded-lg'
+        className='relative flex gap-x-[6px] mr-10 pt-[6px] pb-[2px] pl-3 bg-outgoingMessageBG rounded-lg shadow-sm'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

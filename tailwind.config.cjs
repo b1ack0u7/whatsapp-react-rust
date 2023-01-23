@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       colors: {
         "uiBG": "#edeff1",
-        "chatBG": "#f3f0ea"
+        "chatBG": "#f3f0ea",
+        "outgoingMessageBG": "#d9fdd3"
       }
     },
   },

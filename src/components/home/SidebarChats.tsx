@@ -9,7 +9,7 @@ const SidebarChats = () => {
       <div className="flex items-center mx-4 my-2 px-4 py-2 gap-x-4 bg-uiBG rounded-lg">
         <i className={`fi ${inputSearch.length == 0 ? 'fi-br-search text-gray-500' : 'fi-br-arrow-left text-emerald-400'} mr-2 text-[14px] `}/>
         <input 
-          className='w-full appearance-none text-[14px] text-righ focus:outline-none bg-transparent'
+          className='w-full appearance-none text-[14px] text-righ focus:outline-none bg-transparent text-gray-700'
           type='search'
           value={inputSearch}
           placeholder='Buscar un chat o inicia uno nuevo.'
