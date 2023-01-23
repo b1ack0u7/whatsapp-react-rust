@@ -1,7 +1,10 @@
-import React from 'react'
 import { appWindow } from '@tauri-apps/api/window';
+import { useDispatch } from 'react-redux';
+import { setSidebarMenuShow } from '../../redux/slices/appSlice';
 
 const Draggable = () => {
+  const dispatch = useDispatch();
+
   return (
     <div
       className='flex h-[58px] bg-uiBG'
@@ -19,7 +22,10 @@ const Draggable = () => {
       }}
     >
       <div className='flex items-center gap-x-4 ml-[5rem] w-[290px] px-5 text-[18px] text-gray-700'>
-        <div className='flex justify-center items-center w-[35px] h-[35px] rounded-full cursor-pointer bg-gray-300'>
+        <div 
+          className='flex justify-center items-center w-[35px] h-[35px] rounded-full cursor-pointer bg-gray-300'
+          onClick={() => dispatch(setSidebarMenuShow(true))}
+        >
           <i className='fi fi-sr-user mt-1 text-[16px]'/>
         </div>
 
@@ -29,7 +35,7 @@ const Draggable = () => {
         </div>
       </div>
 
-      <div className='flex-1 bg-blue-300'>
+      <div className='flex-1'>
         hey
       </div>
     </div>

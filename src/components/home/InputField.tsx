@@ -4,7 +4,7 @@ const InputField = () => {
   const [message, setMessage] = useState<string>('');
 
   return (
-    <div className='flex items-center justify-center gap-x-4 px-6 py-3 bg-uiBG border-t border-t-gray-200'>
+    <div className='flex items-center justify-center gap-x-4 px-6 py-3 bg-uiBG border-t border-t-gray-300'>
       <div className='flex mt-1 text-[20px] text-gray-500 gap-x-4'>
         <i className='fi fi-rr-face-awesome cursor-pointer'/>
         <i className='fi fi-rr-clip cursor-pointer'/>
