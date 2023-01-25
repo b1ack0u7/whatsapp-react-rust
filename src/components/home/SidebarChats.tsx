@@ -1,8 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react"
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+import { initializeSocket, joinRoom } from "../../helpers/Socket";
 
 const SidebarChats = () => {
   const [inputSearch, setInputSearch] = useState<string>('');
+
+  useEffect(() => {
+    initializeSocket();
+  });
 
   return (
     <div className='flex flex-col w-[370px] h-full bg-white'>
@@ -37,12 +43,17 @@ const SidebarChats = () => {
 
 const ItemChat = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const handleSelectChat = async() => {
+    console.log('joined')
+    joinRoom('1');
+  }
 
   return (
     <div
       className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => handleSelectChat()}
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>
