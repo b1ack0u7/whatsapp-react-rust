@@ -1,13 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
 import { initializeSocket, joinRoom } from "../../helpers/Socket";
 
 const SidebarChats = () => {
   const [inputSearch, setInputSearch] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     initializeSocket();
+    setIsLoading(false);
   });
 
   return (
@@ -26,9 +27,9 @@ const SidebarChats = () => {
       <hr />
       
       <div className="flex flex-col h-[538px] overflow-y-scroll">
-        {
-          Array(6).fill(0).map(() => 
-            <ItemChat />
+        { !isLoading &&
+          Array(6).fill(0).map((item, idx) => 
+            <ItemChat key={idx} chatData={idx}/>
           )
         }
 
@@ -41,19 +42,18 @@ const SidebarChats = () => {
   )
 }
 
-const ItemChat = () => {
+const ItemChat = ({chatData}: {chatData: number}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const handleSelectChat = async() => {
-    console.log('joined')
-    joinRoom('1');
-  }
+
+  useEffect(() => {
+    joinRoom(String(chatData));
+  }, []);
 
   return (
     <div
       className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => handleSelectChat()}
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>

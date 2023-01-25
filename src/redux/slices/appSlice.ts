@@ -1,13 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ISidebar, IChatInfo } from '../../interfaces/interfaces';
+import { ISidebar } from '../../interfaces/interfaces';
 
-const initialState: IChatInfo = {
+const initialState: ISidebar = {
   sidebarInfoIsShown: false,
   sidebarMenuIsShown: false,
-  idGroup: undefined,
-  creationDate: undefined,
-  groupName: undefined,
-  participants: undefined
 };
 
 export const appSlice = createSlice({
@@ -19,12 +15,6 @@ export const appSlice = createSlice({
     },
     setSidebarMenuShow: (state, action: PayloadAction<boolean>) => {
       state.sidebarMenuIsShown = action.payload
-    },
-    setChatInfo: (state, action: PayloadAction<IChatInfo>) => {
-      state.idGroup = action.payload.idGroup,
-      state.creationDate = action.payload.creationDate,
-      state.groupName = action.payload.groupName,
-      state.participants = action.payload.participants
     }
   }
 });
@@ -32,5 +22,4 @@ export const appSlice = createSlice({
 export const {
   setSidebarInfoShow,
   setSidebarMenuShow,
-  setChatInfo,
 } = appSlice.actions;

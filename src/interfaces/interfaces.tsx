@@ -9,12 +9,25 @@ export interface ISidebar {
   sidebarMenuIsShown: boolean;
 }
 
-export interface IChatInfo extends ISidebar {
+export interface IGroupChat {
   idGroup?: string;
   creationDate?: string;
   groupName?: string;
-  participants?: {
+  participants?: [{
     id: string,
     name: string
-  };
+  }];
+}
+
+export interface ISingleChat {
+  idSingle?: string;
+  creationDate?: string;
+  participant?: {
+    id: string,
+    name: string
+  }
+}
+
+export interface IChat extends IGroupChat, ISingleChat {
+  messages?: unknown
 }
