@@ -1,7 +1,7 @@
-
-export interface IUser {
-  id?: string;
-  name?: string;
+export interface IRequest<T> {
+  success: boolean;
+  response: T;
+  reason?: T;
 }
 
 export interface ISidebar {
@@ -9,18 +9,34 @@ export interface ISidebar {
   sidebarMenuIsShown: boolean;
 }
 
+export interface IUser {
+  id?: string;
+  name?: string;
+  email?: string;
+  chatGroups?: string[];
+  messages?: IMessage[];
+}
+
+export interface IMessage {
+  id?: string;
+  message?: string;
+  timestamp?: Date,
+  sender?: IUser
+}
+
 export interface IGroupChat {
-  idGroup?: string;
+  id?: string;
   creationDate?: string;
   groupName?: string;
   participants?: [{
     id: string,
     name: string
   }];
+  message?: IMessage;
 }
 
 export interface ISingleChat {
-  idSingle?: string;
+  id?: string;
   creationDate?: string;
   participant?: {
     id: string,
@@ -29,5 +45,5 @@ export interface ISingleChat {
 }
 
 export interface IChat extends IGroupChat, ISingleChat {
-  messages?: unknown
+  messages?: unknown;
 }

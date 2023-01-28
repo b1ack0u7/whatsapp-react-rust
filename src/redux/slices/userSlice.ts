@@ -9,7 +9,9 @@ export const userSlice = createSlice({
   reducers:{
     setCurrentUser: (state, action: PayloadAction<IUser>) => {
       state.id = action.payload.id,
-      state.name = action.payload.name
+      state.name = action.payload.name,
+      state.email = action.payload.email,
+      state.chatGroups = action.payload.chatGroups
     }
   }
 });

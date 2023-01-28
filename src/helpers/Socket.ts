@@ -1,8 +1,10 @@
 import io, { Socket } from "socket.io-client";
+import React from 'react';
 let socket:Socket | undefined;
 
-const initializeSocket = () => {
+const initializeSocket = (setIsLoading?:React.Dispatch<React.SetStateAction<boolean>>) => {
   socket = io("http://localhost:4002");
+  if (setIsLoading) setIsLoading(false);
 }
 
 const joinRoom = (roomId:string) => {

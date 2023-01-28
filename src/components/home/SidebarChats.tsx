@@ -1,14 +1,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { initializeSocket, joinRoom } from "../../helpers/Socket";
+import requester from '../../helpers/Requester';
+import { IGroupChat, IRequest } from "../../interfaces/interfaces";
+import moment from "moment";
+import { useDispatch } from 'react-redux';
+import { setGroupChatData } from "../../redux/slices/chatSlice";
 
-const SidebarChats = () => {
+const SidebarChats = ({chatRooms}: {chatRooms?: string[]}) => {
   const [inputSearch, setInputSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    initializeSocket();
-    setIsLoading(false);
+    initializeSocket(setIsLoading);
   });
 
   return (
@@ -27,9 +31,9 @@ const SidebarChats = () => {
       <hr />
       
       <div className="flex flex-col h-[538px] overflow-y-scroll">
-        { !isLoading &&
-          Array(6).fill(0).map((item, idx) => 
-            <ItemChat key={idx} chatData={idx}/>
+        { chatRooms && !isLoading &&
+          chatRooms.map((item, idx) => 
+            <ItemChat key={idx} roomId={item}/>
           )
         }
 
@@ -42,30 +46,44 @@ const SidebarChats = () => {
   )
 }
 
-const ItemChat = ({chatData}: {chatData: number}) => {
+const ItemChat = ({roomId}: {roomId: string}) => {
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [chatInfo, setChatInfo] = useState<IGroupChat | undefined>(undefined);
+
+  const fetchChatRoomInfo = async() => {
+    const respChatsInfo:IRequest<IGroupChat> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: roomId, lastMessage: true}});
+    if (!respChatsInfo.success) return;
+    setChatInfo(respChatsInfo.response);
+  }
+
+  const handleSelectChat = () => {
+    dispatch(setGroupChatData(chatInfo));
+  }
 
   useEffect(() => {
-    joinRoom(String(chatData));
+    fetchChatRoomInfo();
+    joinRoom(roomId);
   }, []);
-
+    
   return (
     <div
       className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => handleSelectChat()}  
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>
 
         <div className="flex flex-1">
           <div className="flex-1">
-            <p className="">Club de Algoritmia GDA</p>
-            <p className="text-gray-500 text-[14px]">Last message</p>
+            <p className="">{chatInfo?.groupName}</p>
+            <p className="text-gray-500 text-[14px]"><span className="font-medium">{chatInfo?.message?.sender?.name?.split(' ')[0]}: </span>{chatInfo?.message?.message}</p>
           </div>
 
           <div className="flex flex-col items-end gap-y-[6px]">
-            <p className="text-emerald-400 text-[12px] font-bold">12:55 p. m.</p>
+            <p className="text-emerald-400 text-[12px] font-bold">{moment(chatInfo?.message?.timestamp).format('HH:mm a')}</p>
 
             <div className="relative">
               <motion.div

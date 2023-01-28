@@ -32,8 +32,8 @@ const IncomingMessage = () => {
 
       <div className='flex flex-col gap-y-[2px]'>
         {
-          Array(6).fill(0).map(() => 
-            <IndividualMessage animation={animationsContainer}/>
+          Array(6).fill(0).map((_, idx) => 
+            <IndividualMessage key={idx} animation={animationsContainer}/>
           )  
         }
       </div>
