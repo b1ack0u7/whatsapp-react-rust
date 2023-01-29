@@ -2,7 +2,7 @@ import IncomingMessage from './IncomingMessage';
 import OutgoingMessage from './OutgoingMessage';
 import BG from '../../assets/bg-chat.png';
 import InputField from './InputField';
-import { IChat, IMessage, IRequest } from '../../interfaces/interfaces';
+import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useState, useEffect } from 'react';
@@ -16,8 +16,20 @@ const ChatInstance = () => {
   const [messages, setMessages] = useState<IMessage[] | undefined>(undefined);
 
   const groupMessagesById = (rawMessages:IMessage[]) => {
-    console.log("🚀 ~ file: ChatInstance.tsx:19 ~ groupMessagesById ~ rawMessages", rawMessages)
-    console.log("🚀 ~ file: ChatInstance.tsx:22 ~ groupMessagesById ~ chatReducer.participants", chatReducer.participants)
+    let tmpMessages:IUser[] = [];
+    rawMessages.forEach(item => {
+      let idx = tmpMessages.length-1;
+      if (item.sender?.id === tmpMessages[idx]?.id) {
+        tmpMessages[idx].messages?.push(item);
+      } else {
+        tmpMessages.push(chatReducer.participants.find(user => user.id === item.sender?.id)!);
+        idx = tmpMessages.length-1;
+        if (!tmpMessages[idx].messages) tmpMessages[idx] = {...tmpMessages[idx], messages: []};
+        tmpMessages[idx].messages?.push(item);
+      }
+    });
+    console.log("🚀 ~ file: ChatInstance.tsx:33 ~ groupMessagesById ~ tmpMessages", tmpMessages)
+    setMessages(tmpMessages);
   }
 
   const fetchMessages = async() => {
@@ -26,7 +38,6 @@ const ChatInstance = () => {
     if (!respMessages.success) return;
 
     groupMessagesById(respMessages.response);
-    setMessages(respMessages.response);
   }
 
   useEffect(() => {
@@ -50,10 +61,10 @@ const ChatInstance = () => {
             <div className='flex flex-col h-[530px] overflow-y-scroll mx-6 mt-1 pb-4 gap-y-2'>
               { messages &&
                 messages.map((item, idx) => {
-                  if (item.sender?.id === userData.id){
-                    return <OutgoingMessage key={idx} />
+                  if (userData.id === item.id){
+                    return <OutgoingMessage userBundle={item} key={idx} />
                   } else {
-                    return <IncomingMessage key={idx}/>
+                    return <IncomingMessage userBundle={item} key={idx}/>
                   }
                 })
               }

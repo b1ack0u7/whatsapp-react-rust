@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { IMessage, IUser } from '../../interfaces/interfaces';
+import moment from 'moment';
 
-const IncomingMessage = () => {
+const IncomingMessage = ({userBundle}: {userBundle:IUser}) => {
   const animationsContainer = {
     start: {
       opacity: 0,
@@ -28,20 +30,23 @@ const IncomingMessage = () => {
 
   return (
     <div className='select-text'>
-      <InitialMessage animation={animationsContainer}/>
-
-      <div className='flex flex-col gap-y-[2px]'>
-        {
-          Array(6).fill(0).map((_, idx) => 
-            <IndividualMessage key={idx} animation={animationsContainer}/>
-          )  
-        }
-      </div>
+      <InitialMessage message={userBundle.messages![0]} animation={animationsContainer}/>
+      { userBundle.messages!.length > 1 &&
+        <div className='flex flex-col gap-y-[2px]'>
+          {
+            userBundle.messages!.map((item, idx) => {
+              if (idx !== 0 ) {
+                return <IndividualMessage message={item} animation={animationsContainer} key={idx}/>
+              }
+            })  
+          }
+        </div>
+      }
     </div>
   )
 }
 
-const InitialMessage = ({animation}: {animation: any}) => {
+const InitialMessage = ({message, animation}: {message:IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
@@ -56,7 +61,7 @@ const InitialMessage = ({animation}: {animation: any}) => {
         <div className='absolute -left-4 top-0 w-0 h-0 border-r-white border-t-0 border-r-[20px] border-b-[15px] border-b-transparent rounded-tl-md'/>
 
         <div className='relative'>
-          <p className='text-[14px] font-medium text-green-500 hover:underline hover:cursor-pointer'>Axel Hernandez Montes de Oca</p>
+          <p className='text-[14px] font-medium text-green-500 hover:underline hover:cursor-pointer'>{message.sender?.name}</p>
           <AnimatePresence mode="wait">
             { isHovered &&
               <motion.i
@@ -71,15 +76,15 @@ const InitialMessage = ({animation}: {animation: any}) => {
         </div>
 
         <div className='flex mb-[3px] gap-x-[6px]'>
-          <p className='text-[14px] break-all'>Hola estoy ocupando una demo de whatsapp</p>
-          <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>7:58 p. m.</p>
+          <p className='text-[14px] break-all'>{message.message}</p>
+          <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>{moment(message.timestamp || new Date()).format('hh:mm a')}</p>
         </div>
       </div>
     </div>
   )
 }
 
-const IndividualMessage = ({animation}: {animation: any}) => {
+const IndividualMessage = ({message, animation}: {message:IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
@@ -89,8 +94,8 @@ const IndividualMessage = ({animation}: {animation: any}) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <p className='text-[14px]'>Hola como estas?</p>
-        <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>7:58 p. m.</p>
+        <p className='text-[14px]'>{message.message}</p>
+        <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>{moment(message.timestamp || new Date()).format('hh:mm a')}</p>
         <AnimatePresence mode="wait">
           { isHovered &&
             <motion.i

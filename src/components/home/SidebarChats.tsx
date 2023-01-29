@@ -50,15 +50,17 @@ const ItemChat = ({roomId}: {roomId: string}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [chatInfo, setChatInfo] = useState<IGroupChat | undefined>(undefined);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true); 
 
   const fetchChatRoomInfo = async() => {
     const respChatsInfo:IRequest<IGroupChat> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: roomId, lastMessage: true}});
     if (!respChatsInfo.success) return;
     setChatInfo(respChatsInfo.response);
+    setIsDisabled(false);
   }
 
   const handleSelectChat = () => {
-    dispatch(setGroupChatData(chatInfo));
+    dispatch(setGroupChatData(chatInfo!));
   }
 
   useEffect(() => {
@@ -67,11 +69,12 @@ const ItemChat = ({roomId}: {roomId: string}) => {
   }, []);
     
   return (
-    <div
-      className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer"
+    <button
+      className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer text-left"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => handleSelectChat()}  
+      onClick={() => handleSelectChat()}
+      disabled={isDisabled}
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>
@@ -79,11 +82,11 @@ const ItemChat = ({roomId}: {roomId: string}) => {
         <div className="flex flex-1">
           <div className="flex-1">
             <p className="">{chatInfo?.groupName}</p>
-            <p className="text-gray-500 text-[14px]"><span className="font-medium">{chatInfo?.message?.sender?.name?.split(' ')[0]}: </span>{chatInfo?.message?.message}</p>
+            <p className="text-gray-500 text-[14px]"><span className="font-medium">{chatInfo?.lastMessage?.sender?.name?.split(' ')[0]}: </span>{chatInfo?.lastMessage?.message}</p>
           </div>
 
           <div className="flex flex-col items-end gap-y-[6px]">
-            <p className="text-emerald-400 text-[12px] font-bold">{moment(chatInfo?.message?.timestamp).format('HH:mm a')}</p>
+            <p className="text-emerald-400 text-[12px] font-bold">{moment(chatInfo?.lastMessage?.timestamp).format('hh:mm a')}</p>
 
             <div className="relative">
               <motion.div
@@ -105,7 +108,7 @@ const ItemChat = ({roomId}: {roomId: string}) => {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   )
 }
 

@@ -28,20 +28,14 @@ export interface IGroupChat {
   id?: string;
   creationDate?: string;
   groupName?: string;
-  participants?: [{
-    id: string,
-    name: string
-  }];
-  message?: IMessage;
+  participants: IUser[];
+  lastMessage?: IMessage;
 }
 
 export interface ISingleChat {
   id?: string;
   creationDate?: string;
-  participant?: {
-    id: string,
-    name: string
-  }
+  participant: IUser
 }
 
 export interface IChat extends IGroupChat, ISingleChat {
