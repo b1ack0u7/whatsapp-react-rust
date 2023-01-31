@@ -1,14 +1,15 @@
-import IncomingMessage from './IncomingMessage';
-import OutgoingMessage from './OutgoingMessage';
-import BG from '../../assets/bg-chat.png';
-import InputField from './InputField';
-import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { useState, useEffect } from 'react';
+import { Socket } from 'socket.io-client';
+import BG from '../../assets/bg-chat.png';
 import requester from '../../helpers/Requester';
+import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
+import { RootState } from '../../redux/store';
+import IncomingMessage from './IncomingMessage';
+import InputField from './InputField';
+import OutgoingMessage from './OutgoingMessage';
 
-const ChatInstance = () => {
+const ChatInstance = ({socket}: {socket: Socket}) => {
   const chatReducer = useSelector((state: RootState) => state.chatReducer);
   const userData = useSelector((state: RootState) => state.userReducer);
 
@@ -28,7 +29,7 @@ const ChatInstance = () => {
         tmpMessages[idx].messages?.push(item);
       }
     });
-    console.log("🚀 ~ file: ChatInstance.tsx:33 ~ groupMessagesById ~ tmpMessages", tmpMessages)
+    console.log("🚀 ~ file: ChatInstance.tsx:34 ~ groupMessagesById ~ tmpMessages", tmpMessages)
     setMessages(tmpMessages);
   }
 
@@ -36,14 +37,13 @@ const ChatInstance = () => {
     setChatData({...chatReducer});
     const respMessages:IRequest<IMessage[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupMessages', params:{idGroup: chatReducer.id}});
     if (!respMessages.success) return;
-
     groupMessagesById(respMessages.response);
   }
 
   useEffect(() => {
     if (chatData.id !== chatReducer.id) fetchMessages();
   },[chatReducer.id]);
-  
+
   return (
     <>
       { chatData.id &&
@@ -70,7 +70,12 @@ const ChatInstance = () => {
               }
             </div>
 
-            <InputField />
+            <InputField
+              socket={socket}
+              chatData={chatData}
+              userData={userData}
+              setMessages={setMessages}  
+            />
           </div>
         </div>
       }

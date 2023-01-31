@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ISidebar } from '../../interfaces/interfaces';
+import { Socket } from 'socket.io-client';
+import { IApp } from '../../interfaces/interfaces';
 
-const initialState: ISidebar = {
+const initialState: IApp = {
   sidebarInfoIsShown: false,
   sidebarMenuIsShown: false,
 };

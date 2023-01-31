@@ -1,19 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { initializeSocket, joinRoom } from "../../helpers/Socket";
-import requester from '../../helpers/Requester';
-import { IGroupChat, IRequest } from "../../interfaces/interfaces";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
+import { Socket } from "socket.io-client";
+import requester from '../../helpers/Requester';
+import { joinRoom } from "../../helpers/Socket";
+import { IGroupChat, IRequest } from "../../interfaces/interfaces";
 import { setGroupChatData } from "../../redux/slices/chatSlice";
 
-const SidebarChats = ({chatRooms}: {chatRooms?: string[]}) => {
+const SidebarChats = ({chatRooms, socket}: {chatRooms?: string[], socket?: Socket}) => {
   const [inputSearch, setInputSearch] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    initializeSocket(setIsLoading);
-  });
 
   return (
     <div className='flex flex-col w-[370px] h-full bg-white'>
@@ -31,9 +27,9 @@ const SidebarChats = ({chatRooms}: {chatRooms?: string[]}) => {
       <hr />
       
       <div className="flex flex-col h-[538px] overflow-y-scroll">
-        { chatRooms && !isLoading &&
+        { chatRooms && socket &&
           chatRooms.map((item, idx) => 
-            <ItemChat key={idx} roomId={item}/>
+            <ItemChat key={idx} roomId={item} socket={socket!}/>
           )
         }
 
@@ -46,7 +42,7 @@ const SidebarChats = ({chatRooms}: {chatRooms?: string[]}) => {
   )
 }
 
-const ItemChat = ({roomId}: {roomId: string}) => {
+const ItemChat = ({roomId, socket}: {roomId: string, socket: Socket}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [chatInfo, setChatInfo] = useState<IGroupChat | undefined>(undefined);
@@ -65,7 +61,7 @@ const ItemChat = ({roomId}: {roomId: string}) => {
 
   useEffect(() => {
     fetchChatRoomInfo();
-    joinRoom(roomId);
+    joinRoom(socket, roomId);
   }, []);
     
   return (

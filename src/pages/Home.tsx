@@ -1,19 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { io, Socket } from 'socket.io-client';
 import ChatInstance from '../components/home/ChatInstance';
 import SidebarChats from '../components/home/SidebarChats';
 import SidebarMenu from '../components/home/SidebarMenu/SidebarMenu';
 import Draggable from '../components/ui/Draggable';
-import { RootState } from '../redux/store';
-import { useEffect } from 'react';
 import requester from '../helpers/Requester';
+import { initializeSocket } from '../helpers/Socket';
 import { IRequest, IUser } from '../interfaces/interfaces';
 import { setCurrentUser } from '../redux/slices/userSlice';
+import { RootState } from '../redux/store';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { sidebarMenuIsShown } = useSelector((state: RootState) => state.appReducer);
   const userData = useSelector((state: RootState) => state.userReducer);
+  const [socket, setSocket] = useState<Socket | undefined>(undefined);
 
   const animationContainer = {
     start: {
@@ -30,7 +33,8 @@ const Home = () => {
   };
 
   const initialize = async() => {
-    const respUserData:IRequest<IUser> = await requester({url: "http://localhost:4002/whatsapp/fetchUser", params: {idUser: "63d2d86d88c681f3de729f9e"}});
+    initializeSocket(setSocket);
+    const respUserData: IRequest<IUser> = await requester({url: "http://localhost:4002/whatsapp/fetchUser", params: {idUser: "63d2d86d88c681f3de729f9e"}});
     if (!respUserData.success) return;
     dispatch(setCurrentUser(respUserData.response));
   }
@@ -47,7 +51,7 @@ const Home = () => {
 
           <div className='flex-1 select-none bg-uiBG'>
             <div className='flex h-full'>
-              <SidebarChats chatRooms={userData.chatGroups} />
+              <SidebarChats chatRooms={userData.chatGroups} socket={socket}/>
 
               <AnimatePresence mode='wait'>
                 { sidebarMenuIsShown &&
@@ -64,7 +68,7 @@ const Home = () => {
                 }
               </AnimatePresence>
 
-              <ChatInstance />
+              <ChatInstance socket={socket!}/>
             </div>
           </div>
         </div>

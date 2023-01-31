@@ -1,10 +1,12 @@
+import { Socket } from 'socket.io-client';
+
 export interface IRequest<T> {
   success: boolean;
   response: T;
   reason?: T;
 }
 
-export interface ISidebar {
+export interface IApp {
   sidebarInfoIsShown: boolean;
   sidebarMenuIsShown: boolean;
 }
@@ -36,6 +38,11 @@ export interface ISingleChat {
   id?: string;
   creationDate?: string;
   participant: IUser
+}
+
+export interface ISocket {
+  roomId: string;
+  dataTransport: unknown;
 }
 
 export interface IChat extends IGroupChat, ISingleChat {
