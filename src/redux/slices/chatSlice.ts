@@ -31,4 +31,5 @@ export const chatSlice = createSlice({
 export const {
   setGroupChatData,
   setSingleChatData,
+  setLastMessage,
 } = chatSlice.actions;

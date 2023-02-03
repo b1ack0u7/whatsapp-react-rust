@@ -16,6 +16,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const { sidebarMenuIsShown } = useSelector((state: RootState) => state.appReducer);
   const userData = useSelector((state: RootState) => state.userReducer);
+
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
 
   const animationContainer = {
@@ -35,6 +36,7 @@ const Home = () => {
   const initialize = async() => {
     initializeSocket(setSocket);
     const respUserData: IRequest<IUser> = await requester({url: "http://localhost:4002/whatsapp/fetchUser", params: {idUser: "63d2d86d88c681f3de729f9e"}});
+    console.log("🚀 ~ file: Home.tsx:38 ~ initialize ~ respUserData", respUserData)
     if (!respUserData.success) return;
     dispatch(setCurrentUser(respUserData.response));
   }
@@ -45,7 +47,7 @@ const Home = () => {
 
   return (
     <AnimatePresence>
-      { userData.id &&
+      { userData.id && socket &&
         <div className='flex flex-col h-screen '>
           <Draggable />
 

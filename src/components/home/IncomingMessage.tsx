@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { IMessage, IUser } from '../../interfaces/interfaces';
 import moment from 'moment';
+import { useState } from 'react';
+import { IMessage } from '../../interfaces/interfaces';
 
-const IncomingMessage = ({userBundle}: {userBundle:IUser}) => {
+const IncomingMessage = ({message, variant = 0}: {message: IMessage, variant: number}) => {
   const animationsContainer = {
     start: {
       opacity: 0,
@@ -30,27 +30,20 @@ const IncomingMessage = ({userBundle}: {userBundle:IUser}) => {
 
   return (
     <div className='select-text'>
-      <InitialMessage message={userBundle.messages![0]} animation={animationsContainer}/>
-      { userBundle.messages!.length > 1 &&
-        <div className='flex flex-col gap-y-[2px]'>
-          {
-            userBundle.messages!.map((item, idx) => {
-              if (idx !== 0 ) {
-                return <IndividualMessage message={item} animation={animationsContainer} key={idx}/>
-              }
-            })  
-          }
-        </div>
+      { variant === 0 ?
+        <InitialMessage message={message} animation={animationsContainer}/>
+        :
+        <IndividualMessage message={message} animation={animationsContainer}/>
       }
     </div>
   )
 }
 
-const InitialMessage = ({message, animation}: {message:IMessage, animation: any}) => {
+const InitialMessage = ({message, animation}: {message: IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
-    <div className='flex gap-x-4 mb-[2px]'>
+    <div className='flex gap-x-4 mb-[1px]'>
       <div className='w-[25px] h-[25px] rounded-full bg-gray-400'/>
 
       <div
@@ -84,7 +77,7 @@ const InitialMessage = ({message, animation}: {message:IMessage, animation: any}
   )
 }
 
-const IndividualMessage = ({message, animation}: {message:IMessage, animation: any}) => {
+const IndividualMessage = ({message, animation}: {message: IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (

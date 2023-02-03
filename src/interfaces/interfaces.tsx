@@ -1,5 +1,3 @@
-import { Socket } from 'socket.io-client';
-
 export interface IRequest<T> {
   success: boolean;
   response: T;
@@ -21,8 +19,9 @@ export interface IUser {
 
 export interface IMessage {
   id?: string;
+  idGroup?: string;
   message?: string;
-  timestamp?: Date,
+  timestamp?: string;
   sender?: IUser
 }
 
@@ -30,14 +29,14 @@ export interface IGroupChat {
   id?: string;
   creationDate?: string;
   groupName?: string;
-  participants: IUser[];
+  participants?: IUser[];
   lastMessage?: IMessage;
 }
 
 export interface ISingleChat {
   id?: string;
   creationDate?: string;
-  participant: IUser
+  participant?: IUser;
 }
 
 export interface ISocket {
@@ -46,5 +45,5 @@ export interface ISocket {
 }
 
 export interface IChat extends IGroupChat, ISingleChat {
-  messages?: unknown;
+  messages?: IUser[];
 }

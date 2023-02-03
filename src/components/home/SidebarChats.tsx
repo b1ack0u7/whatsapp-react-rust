@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
 import requester from '../../helpers/Requester';
 import { joinRoom } from "../../helpers/Socket";
-import { IGroupChat, IRequest } from "../../interfaces/interfaces";
+import { IGroupChat, IRequest, IMessage } from '../../interfaces/interfaces';
 import { setGroupChatData } from "../../redux/slices/chatSlice";
 
 const SidebarChats = ({chatRooms, socket}: {chatRooms?: string[], socket?: Socket}) => {
@@ -63,7 +63,13 @@ const ItemChat = ({roomId, socket}: {roomId: string, socket: Socket}) => {
     fetchChatRoomInfo();
     joinRoom(socket, roomId);
   }, []);
-    
+  
+  useEffect(() => {
+    socket.on("recieveMessage", (data: IMessage) => {
+      setChatInfo(chat => chat?.id === data.idGroup ? {...chat, lastMessage: data} : {...chat});
+    });
+  }, [socket]);
+
   return (
     <button
       className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer text-left"

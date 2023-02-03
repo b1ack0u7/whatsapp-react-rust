@@ -1,22 +1,30 @@
+import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import { sendMessage } from '../../helpers/Socket';
 import { IChat, IMessage, IUser } from '../../interfaces/interfaces';
 
-const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, chatData: IChat, userData: IUser, setMessages: React.Dispatch<React.SetStateAction<IMessage[] | undefined>>}) => {
+const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, chatData: IChat, userData: IUser, setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>}) => {
   const [message, setMessage] = useState<string>('');
-
+  
   const handleSendMessage = () => {
-    sendMessage(socket!, {roomId: chatData.id!, dataTransport: {message, sender: userData.id}});
-  }
 
-  const updateMessages = () => {
-    
+    const dataTransport: IMessage = {
+      idGroup: chatData.id,
+      message,
+      timestamp: moment.utc(new Date()).format(),
+      sender: {
+        id: userData.id,
+        name: userData.name
+      }
+    };
+    sendMessage(socket!, {roomId: chatData.id!, dataTransport: dataTransport});
+    setMessages(list => [...list, dataTransport]);
   }
 
   useEffect(() => {
-    socket.on("recieveMessage", (data) => {
-      console.log("🚀 ~ file: ChatInstance.tsx:50 ~ socket.on ~ data", data);
+    socket.on("recieveMessage", (data: IMessage) => {
+      setMessages(list => chatData.id === data.idGroup ? list[list.length-1].id !== data.id ? [...list, data] : [...list] : [...list]);
     });
   }, [socket]);
 

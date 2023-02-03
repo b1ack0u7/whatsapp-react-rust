@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { IUser, IMessage } from '../../interfaces/interfaces';
 import moment from 'moment';
+import { useState } from 'react';
+import { IMessage } from '../../interfaces/interfaces';
 
-const OutgoingMessage = ({userBundle}: {userBundle:IUser}) => {
+const OutgoingMessage = ({message, variant = 0}: {message: IMessage, variant: number}) => {
   const animationsContainer = {
     start: {
       opacity: 0,
@@ -30,30 +30,20 @@ const OutgoingMessage = ({userBundle}: {userBundle:IUser}) => {
 
   return (
     <div className='flex justify-end select-text'>
-      <div>
-        <InitialMessage message={userBundle.messages![0]} animation={animationsContainer}/>
-
-        { userBundle.messages!.length > 1 &&
-          <div className='flex flex-col items-end gap-y-[2px]'>
-            {
-              userBundle.messages!.map((item, idx) => {
-                if (idx !== 0 ) {
-                  return <IndividualMessage message={item} animation={animationsContainer} key={idx}/>
-                }
-              })  
-            }
-          </div>
-        }
-      </div>
+      { variant === 0 ? 
+        <InitialMessage message={message} animation={animationsContainer}/>
+        :
+        <IndividualMessage message={message} animation={animationsContainer}/>
+      }
     </div>
   )
 }
 
-const InitialMessage = ({message, animation}: {message:IMessage, animation: any}) => {
+const InitialMessage = ({message, animation}: {message: IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
-    <div className='flex gap-x-4 mb-[2px]'>
+    <div className='flex gap-x-4 mb-[1px]'>
       <div 
         className='relative pt-2 pl-3 bg-outgoingMessageBG rounded-l-lg rounded-br-lg mr-10 shadow-sm'
         onMouseEnter={() => setIsHovered(true)}
@@ -94,7 +84,7 @@ const IndividualMessage = ({message, animation}: {message:IMessage, animation: a
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <p className='text-[14px]'>{message.message}</p>
+        <p className='text-[14px]'>{message?.message}</p>
         <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>{moment(message.timestamp || new Date()).format('hh:mm a')}</p>
         <AnimatePresence mode="wait">
           { isHovered &&
