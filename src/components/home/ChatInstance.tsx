@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import BG from '../../assets/bg-chat.png';
 import requester from '../../helpers/Requester';
-import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
+import { IChat, IMessage, IRequest } from '../../interfaces/interfaces';
 import { RootState } from '../../redux/store';
 import IncomingMessage from './IncomingMessage';
 import InputField from './InputField';
@@ -46,9 +46,7 @@ const ChatInstance = ({socket}: {socket: Socket}) => {
   
   const handleConditionalRender = (item: IMessage, idx: number) => {
     let variant = 0
-    if (item.sender?.id === messages[idx-1]?.sender?.id) {
-      variant = 1
-    }
+    if (item.sender?.id === messages[idx-1]?.sender?.id) variant = 1
     
     if (item.sender?.id === userData.id) return <OutgoingMessage key={idx} message={item} variant={variant}/>
     else return <IncomingMessage key={idx} message={item} variant={variant}/>

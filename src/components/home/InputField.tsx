@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { sendMessage } from '../../helpers/Socket';
 import { IChat, IMessage, IUser } from '../../interfaces/interfaces';
