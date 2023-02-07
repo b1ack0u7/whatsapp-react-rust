@@ -13,7 +13,8 @@ const Draggable = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
-    navigate('/login');
+    navigate('/login', {replace: true});
+    window.location.reload();
   }
 
   return (

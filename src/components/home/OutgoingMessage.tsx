@@ -1,6 +1,7 @@
+import { Menu, MenuItem } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IMessage } from '../../interfaces/interfaces';
 
 const OutgoingMessage = ({message, variant = 0}: {message: IMessage, variant: number}) => {
@@ -41,6 +42,12 @@ const OutgoingMessage = ({message, variant = 0}: {message: IMessage, variant: nu
 
 const InitialMessage = ({message, animation}: {message: IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchor);
+
+  useEffect(() => {
+    if (anchor === null) setIsHovered(false);
+  }, [anchor]);
 
   return (
     <div className='flex gap-x-4 mb-[1px]'>
@@ -53,13 +60,30 @@ const InitialMessage = ({message, animation}: {message: IMessage, animation: any
         <div className='relative'>
           <AnimatePresence mode="wait">
             { isHovered &&
-              <motion.i
-                className="absolute -right-4 top-0 opacity-0 fi fi-br-angle-small-down cursor-pointer text-gray-500 hover:text-gray-700"
-                variants={animation}
-                initial="start"
-                animate="show"
-                exit="hidden"
-              />
+              <>
+                <motion.i
+                  className="absolute -right-4 top-0 opacity-0 fi fi-br-angle-small-down cursor-pointer text-gray-500 hover:text-gray-700"
+                  variants={animation}
+                  initial="start"
+                  animate="show"
+                  exit="hidden"
+                  onClick={(e) => setAnchor(e.currentTarget)}
+                />
+              
+                <Menu
+                  id='basic-menu'
+                  anchorEl={anchor}
+                  open={open}
+                  onClose={() => setAnchor(null)}
+                >
+                  <MenuItem>Info. del mensaje</MenuItem>
+                  <MenuItem
+                    sx={{color: '#EF4444'}}
+                  >
+                    Eliminar
+                  </MenuItem>
+                </Menu>
+              </>
             }
           </AnimatePresence>
         </div>
@@ -76,6 +100,12 @@ const InitialMessage = ({message, animation}: {message: IMessage, animation: any
 
 const IndividualMessage = ({message, animation}: {message:IMessage, animation: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchor);
+
+  useEffect(() => {
+    if (anchor === null) setIsHovered(false);
+  }, [anchor]);
 
   return (
     <div className='flex'>
@@ -88,13 +118,30 @@ const IndividualMessage = ({message, animation}: {message:IMessage, animation: a
         <p className='text-[10px] text-gray-500 mt-3 mr-2 self-end'>{moment(message.timestamp || new Date()).format('hh:mm a')}</p>
         <AnimatePresence mode="wait">
           { isHovered &&
-            <motion.i
-              className="absolute -right-4 top-1 opacity-0 fi fi-br-angle-small-down cursor-pointer text-gray-500 hover:text-gray-700"
-              variants={animation}
-              initial="start"
-              animate="show"
-              exit="hidden"
-            />
+            <>
+              <motion.i
+                className="absolute -right-4 top-1 opacity-0 fi fi-br-angle-small-down cursor-pointer text-gray-500 hover:text-gray-700"
+                variants={animation}
+                initial="start"
+                animate="show"
+                exit="hidden"
+                onClick={(e) => setAnchor(e.currentTarget)}
+              />
+            
+             <Menu
+                id='basic-menu'
+                anchorEl={anchor}
+                open={open}
+                onClose={() => setAnchor(null)}
+              >
+                <MenuItem>Info. del mensaje</MenuItem>
+                <MenuItem
+                  sx={{color: '#EF4444'}}
+                >
+                  Eliminar
+                </MenuItem>
+              </Menu>
+            </>
           }
         </AnimatePresence>
       </div>
