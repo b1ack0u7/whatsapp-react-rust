@@ -17,7 +17,7 @@ const SidebarMenu = () => {
         </div>
       </div>
 
-      <div className='flex flex-1 pt-2 px-4 bg-uiBG'>
+      <div className='flex flex-col flex-1 pt-2 px-4 bg-uiBG'>
         <SecurityMenu />
       </div>
     </>

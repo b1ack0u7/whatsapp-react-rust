@@ -8,7 +8,7 @@ export const store = configureStore({
     userReducer: userSlice.reducer,
     appReducer: appSlice.reducer,
     chatReducer: chatSlice.reducer,
-  },
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>

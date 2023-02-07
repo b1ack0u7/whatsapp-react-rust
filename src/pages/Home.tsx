@@ -13,7 +13,6 @@ import { setCurrentUser } from '../redux/slices/userSlice';
 import { RootState } from '../redux/store';
 
 const Home = () => {
-  const dispatch = useDispatch();
   const { sidebarMenuIsShown } = useSelector((state: RootState) => state.appReducer);
   const userData = useSelector((state: RootState) => state.userReducer);
 
@@ -35,9 +34,6 @@ const Home = () => {
 
   const initialize = async() => {
     initializeSocket(setSocket);
-    const respUserData: IRequest<IUser> = await requester({url: "http://localhost:4002/whatsapp/fetchUser", params: {idUser: "63d2d86d88c681f3de729f9e"}});
-    if (!respUserData.success) return;
-    dispatch(setCurrentUser(respUserData.response));
   }
 
   useEffect(() => {

@@ -8,7 +8,6 @@ const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, 
   const [message, setMessage] = useState<string>('');
   
   const handleSendMessage = () => {
-
     const dataTransport: IMessage = {
       idGroup: chatData.id,
       message,
@@ -18,8 +17,10 @@ const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, 
         name: userData.name
       }
     };
+
     sendMessage(socket!, {roomId: chatData.id!, dataTransport: dataTransport});
     setMessages(list => [...list, dataTransport]);
+    setMessage('');
   }
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, 
         value={message}
         placeholder='Escribe un mensaje aquí'
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
       />
 
       { message.length == 0 ?
@@ -48,7 +50,9 @@ const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, 
           <i className='fi fi-rr-microphone text-[20px] mt-1 text-gray-500 cursor-pointer'/>
         </button>
         :
-        <button onClick={() => handleSendMessage()}>
+        <button
+          onClick={() => handleSendMessage()}
+        >
           <i className='fi fi-rr-paper-plane text-[20px] mt-1 text-gray-500 cursor-pointer'/>
         </button>
       }
