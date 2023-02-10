@@ -1,25 +1,20 @@
 import { appWindow } from '@tauri-apps/api/window';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSidebarMenuShow } from '../../redux/slices/appSlice';
+import { ChatOptions } from '../../interfaces/enums';
+import { IApp, IUser } from '../../interfaces/interfaces';
+import { setChatOption, setLogoutRequest, setSidebarMenuShow } from '../../redux/slices/appSlice';
 import { RootState } from '../../redux/store';
-import { useNavigate } from 'react-router-dom';
 
-const Draggable = () => {
+const Draggable = ({appData, userData}: {appData: IApp, userData: IUser}) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const userData = useSelector((state: RootState) => state.userReducer);
   const chatData = useSelector((state: RootState) => state.chatReducer);
 
-  const handleLogout = () => {
-    localStorage.removeItem('currentUser');
-    navigate('/login', {replace: true});
-    window.location.reload();
-  }
+  const handleSetChatOption = (option: ChatOptions) => dispatch(setChatOption(option));
 
   return (
     <div
-      className={`flex h-[58px] ${userData.id ? 'border-b ' : ''}border-b-gray-300 bg-uiBG`}
+      className={`flex h-[58px] ${userData?.id ? 'border-b ' : ''}border-b-gray-300 bg-uiBG`}
       id='draggable-zone'
       onMouseDown={async(e) => {
         e.preventDefault();
@@ -33,21 +28,43 @@ const Draggable = () => {
         document.getElementById('draggable-zone')?.classList.add('cursor-default');
       }}
     >
-      { userData.id &&
+      { userData?.id &&
         <>
-          <div className='flex items-center gap-x-4 ml-[5rem] w-[290px] px-5 text-[18px] border-r border-r-gray-300 text-gray-700'>
-            <div 
+          <div className='flex items-center gap-x-4 ml-[4rem] w-[306.5px] px-5 text-[18px] border-r bg-blue border-r-gray-300 text-gray-700'>
+            <button 
               className='flex justify-center items-center w-[35px] h-[35px] rounded-full cursor-pointer bg-gray-300'
               onClick={() => dispatch(setSidebarMenuShow(true))}
             >
               <i className='fi fi-sr-user mt-1 text-[16px]'/>
-            </div>
+            </button>
 
-            <div className='flex ml-4 gap-x-6 mt-[6px] text-gray-600'>
-              <i className='fi fi-rr-comment-alt cursor-pointer transition hover:text-black'/>
-              <i className='fi fi-rr-comments cursor-pointer transition hover:text-black'/>
+            <div className='flex flex-1 relative justify-between ml-4 mt-[6px] text-gray-600'>
+              <motion.div
+                className='absolute -bottom-[13px] w-[25px] border-b-[1.5px] border-emerald-500'
+                animate={{x: appData.chatOption === ChatOptions.messages ? -3 : appData.chatOption === ChatOptions.other ? 40 : appData.chatOption === ChatOptions.friends ? 80 : -3}}
+              />
+              <div className='flex gap-x-6'>
+                <button
+                  onClick={() => handleSetChatOption(ChatOptions.messages)}
+                >
+                  <i className={`fi fi-rr-comment-alt cursor-pointer transition ${appData.chatOption === ChatOptions.messages && 'text-black'} hover:text-black`}/>
+                </button>
+
+                <button
+                  onClick={() => handleSetChatOption(ChatOptions.other)}
+                >
+                  <i className={`fi fi-rr-comments cursor-pointer transition ${appData.chatOption === ChatOptions.other && 'text-black'} hover:text-black`}/>
+                </button>
+
+                <button
+                  onClick={() => handleSetChatOption(ChatOptions.friends)}
+                >
+                  <i className={`fi fi-rr-users cursor-pointer transition ${appData.chatOption === ChatOptions.friends && 'text-black'} hover:text-black`}/>
+                </button>
+              </div>
+
               <button
-                onClick={() => handleLogout()}
+                onClick={() => dispatch(setLogoutRequest(true))}
               >
                 <i className='fi fi-rr-exit cursor-pointer transition hover:text-black'/>
               </button>

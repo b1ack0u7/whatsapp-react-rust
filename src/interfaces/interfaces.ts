@@ -1,3 +1,5 @@
+import { ChatOptions } from "./enums";
+
 export interface IRequest<T> {
   success: boolean;
   response: T;
@@ -7,6 +9,9 @@ export interface IRequest<T> {
 export interface IApp {
   sidebarInfoIsShown: boolean;
   sidebarMenuIsShown: boolean;
+  chatOption: ChatOptions;
+  isLoading: boolean;
+  logoutRequested: boolean;
 }
 
 export interface IUser {

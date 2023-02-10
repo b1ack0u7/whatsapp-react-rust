@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
+import banner from '../../assets/banner-chat-light.svg';
 import BG from '../../assets/bg-chat.png';
 import requester from '../../helpers/Requester';
 import { IChat, IMessage, IRequest } from '../../interfaces/interfaces';
@@ -16,30 +17,9 @@ const ChatInstance = ({socket}: {socket: Socket}) => {
   const [chatData, setChatData] = useState<IChat>(chatReducer);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
-  // const groupMessagesById = (rawMessages:IMessage[]) => {
-  //   let tmpMessages:IUser[] = [];
-  //   rawMessages.forEach(item => {
-  //     let idx = tmpMessages.length-1;
-  //     if (item.sender?.id === tmpMessages[idx]?.id) {
-  //       tmpMessages[idx].messages?.push(item);
-  //     } else {
-  //       let chatDataFiltered = {...chatReducer.participants.find(user => user.id === item.sender?.id)!}
-  //       delete chatDataFiltered.chatGroups;
-  //       delete chatDataFiltered.email;
-  //       tmpMessages.push(chatDataFiltered);
-  //       idx = tmpMessages.length-1;
-  //       if (!tmpMessages[idx].messages) tmpMessages[idx] = {...tmpMessages[idx], messages: []};
-  //       tmpMessages[idx].messages?.push(item);
-  //     }
-  //   });
-  //   setMessages([...tmpMessages]);
-  // }
-
-
   const fetchMessages = async() => {
     setChatData({...chatReducer});
     const respMessages:IRequest<IMessage[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupMessages', params:{idGroup: chatReducer.id}});
-    console.log("🚀 ~ file: ChatInstance.tsx:57 ~ fetchMessages ~ respMessages", respMessages)
     if (!respMessages.success) return;
     setMessages(respMessages.response);
   }
@@ -58,7 +38,7 @@ const ChatInstance = ({socket}: {socket: Socket}) => {
 
   return (
     <>
-      { chatData.id &&
+      { chatData.id ?
         <div className='flex flex-col flex-1'>
           <div className='absolute w-full h-full bg-chatBG z-0'/>
           <div
@@ -81,6 +61,14 @@ const ChatInstance = ({socket}: {socket: Socket}) => {
               chatData={chatData}
               userData={userData}
               setMessages={setMessages}
+            />
+          </div>
+        </div>
+        :
+        <div className='flex-1 relative'>
+          <div className='absolute left-[25%] top-[30%]'>
+            <img
+              src={banner}
             />
           </div>
         </div>
