@@ -12,6 +12,7 @@ export interface IApp {
   chatOption: ChatOptions;
   isLoading: boolean;
   logoutRequested: boolean;
+  sideBarChats: IGroupChat[];
 }
 
 export interface IUser {

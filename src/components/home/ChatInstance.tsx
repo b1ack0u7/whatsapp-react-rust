@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import banner from '../../assets/banner-chat-light.svg';
 import BG from '../../assets/bg-chat.png';
 import requester from '../../helpers/Requester';
-import { IChat, IMessage, IRequest } from '../../interfaces/interfaces';
-import { RootState } from '../../redux/store';
+import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
 import IncomingMessage from './IncomingMessage';
 import InputField from './InputField';
 import OutgoingMessage from './OutgoingMessage';
 
-const ChatInstance = ({socket}: {socket: Socket}) => {
-  const chatReducer = useSelector((state: RootState) => state.chatReducer);
-  const userData = useSelector((state: RootState) => state.userReducer);
-
+const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatReducer: IChat, userData: IUser}) => {
   const [chatData, setChatData] = useState<IChat>(chatReducer);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
@@ -69,6 +64,7 @@ const ChatInstance = ({socket}: {socket: Socket}) => {
           <div className='absolute left-[25%] top-[30%]'>
             <img
               src={banner}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         </div>

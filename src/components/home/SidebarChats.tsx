@@ -6,10 +6,35 @@ import { Socket } from "socket.io-client";
 import requester from '../../helpers/Requester';
 import { joinRoom } from "../../helpers/Socket";
 import { IGroupChat, IRequest, IMessage } from '../../interfaces/interfaces';
+import { setSideBarChats } from "../../redux/slices/appSlice";
 import { setGroupChatData } from "../../redux/slices/chatSlice";
 
-const SidebarChats = ({chatRooms, socket}: {chatRooms?: string[], socket?: Socket}) => {
+const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], socket: Socket, chatsInfo: IGroupChat[]}) => {
+  const dispatch = useDispatch()
   const [inputSearch, setInputSearch] = useState<string>('');
+  
+  const fetchChatInfo = async() => {
+    if (chatRooms.length === 0) return;
+    
+    const respChatsInfo:IRequest<IGroupChat []> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: chatRooms, lastMessage: true}});
+    if (!respChatsInfo.success) return;
+    
+    dispatch(setSideBarChats({
+      initialChats: respChatsInfo.response,
+      initial: true
+    }));
+    respChatsInfo.response.forEach(item => item.id && joinRoom(socket, item.id));
+  }
+  
+  useEffect(() => {
+    fetchChatInfo();
+  }, []);
+  
+  useEffect(() => {
+    socket.on("recieveMessage", (data: IMessage) => {
+      dispatch(setSideBarChats({incomingChat: data}));
+    });
+  }, [socket]);
 
   return (
     <div className='flex flex-col w-[370px] h-full bg-white'>
@@ -27,9 +52,9 @@ const SidebarChats = ({chatRooms, socket}: {chatRooms?: string[], socket?: Socke
       <hr />
       
       <div className="flex flex-col h-[538px] overflow-y-scroll">
-        { chatRooms && socket &&
-          chatRooms.map((item, idx) => 
-            <ItemChat key={idx} roomId={item} socket={socket!}/>
+        { chatsInfo && socket &&
+          chatsInfo.map((item, idx) => 
+            <ItemChat key={idx} chatInfo={item}/>
           )
         }
 
@@ -42,33 +67,13 @@ const SidebarChats = ({chatRooms, socket}: {chatRooms?: string[], socket?: Socke
   )
 }
 
-const ItemChat = ({roomId, socket}: {roomId: string, socket: Socket}) => {
+const ItemChat = ({chatInfo}: {chatInfo: IGroupChat}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [chatInfo, setChatInfo] = useState<IGroupChat | undefined>(undefined);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true); 
-
-  const fetchChatRoomInfo = async() => {
-    const respChatsInfo:IRequest<IGroupChat> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: roomId, lastMessage: true}});
-    if (!respChatsInfo.success) return;
-    setChatInfo(respChatsInfo.response);
-    setIsDisabled(false);
-  }
 
   const handleSelectChat = () => {
-    dispatch(setGroupChatData(chatInfo!));
+    dispatch(setGroupChatData(chatInfo));
   }
-
-  useEffect(() => {
-    fetchChatRoomInfo();
-    joinRoom(socket, roomId);
-  }, []);
-  
-  useEffect(() => {
-    socket.on("recieveMessage", (data: IMessage) => {
-      setChatInfo(chat => chat?.id === data.idGroup ? {...chat, lastMessage: data} : {...chat});
-    });
-  }, [socket]);
 
   return (
     <button
@@ -76,7 +81,6 @@ const ItemChat = ({roomId, socket}: {roomId: string, socket: Socket}) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => handleSelectChat()}
-      disabled={isDisabled}
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>

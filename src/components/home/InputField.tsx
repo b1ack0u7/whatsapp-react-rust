@@ -3,10 +3,15 @@ import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { sendMessage } from '../../helpers/Socket';
 import { IChat, IMessage, IUser } from '../../interfaces/interfaces';
+import { useDispatch } from 'react-redux';
+import { setSideBarChats } from '../../redux/slices/appSlice';
+import { v4 as uuid } from 'uuid';
 
 const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, chatData: IChat, userData: IUser, setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>}) => {
+  const dispatch = useDispatch();
+
   const [message, setMessage] = useState<string>('');
-  
+
   const handleSendMessage = () => {
     const dataTransport: IMessage = {
       idGroup: chatData.id,
@@ -20,6 +25,7 @@ const InputField = ({socket, chatData, userData, setMessages}: {socket: Socket, 
 
     sendMessage(socket!, {roomId: chatData.id!, dataTransport: dataTransport});
     setMessages(list => [...list, dataTransport]);
+    dispatch(setSideBarChats({incomingChat: {...dataTransport, id: uuid()}}));
     setMessage('');
   }
 

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ChatOptions } from "../../interfaces/enums";
-import { IApp } from '../../interfaces/interfaces';
+import { IApp, IGroupChat, IMessage } from '../../interfaces/interfaces';
 
 const initialState: IApp = {
   sidebarInfoIsShown: false,
@@ -8,6 +8,7 @@ const initialState: IApp = {
   chatOption: ChatOptions.messages,
   isLoading: false,
   logoutRequested: false,
+  sideBarChats: [],
 };
 
 export const appSlice = createSlice({
@@ -28,6 +29,20 @@ export const appSlice = createSlice({
     },
     setLogoutRequest: (state, action: PayloadAction<boolean>) => {
       state.logoutRequested = action.payload;
+    },
+    setSideBarChats: (state, action: PayloadAction<{initialChats?: IGroupChat[], incomingChat?: IMessage, initial?: boolean}>) => {
+      if (action.payload.initial === true) state.sideBarChats = action.payload.initialChats || [];
+      else {
+        let updated = false;
+        const updatedChats = state.sideBarChats.map(item => {
+          if (item.id === action.payload.incomingChat?.idGroup) {
+            updated = true;
+            return { ...item, lastMessage: action.payload.incomingChat };
+          }
+          return item;
+        });
+        if (updated) state.sideBarChats = updatedChats;
+      }
     }
   }
 });
@@ -37,5 +52,6 @@ export const {
   setSidebarMenuShow,
   setChatOption,
   setIsLoading,
-  setLogoutRequest
+  setLogoutRequest,
+  setSideBarChats,
 } = appSlice.actions;

@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from '../../interfaces/interfaces';
 
-const initialState: IUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')!) : {};
+const initialState: IUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')!) : {
+  chatGroups: []
+};
 
 export const userSlice = createSlice({
   name: 'userSlice',

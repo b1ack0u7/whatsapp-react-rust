@@ -1,16 +1,30 @@
 import { appWindow } from '@tauri-apps/api/window';
 import { motion } from 'framer-motion';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ChatOptions } from '../../interfaces/enums';
-import { IApp, IUser } from '../../interfaces/interfaces';
+import { IApp, IChat, IUser } from '../../interfaces/interfaces';
 import { setChatOption, setLogoutRequest, setSidebarMenuShow } from '../../redux/slices/appSlice';
-import { RootState } from '../../redux/store';
 
-const Draggable = ({appData, userData}: {appData: IApp, userData: IUser}) => {
+const Draggable = ({appData, userData, chatData}: {appData: IApp, userData: IUser, chatData: IChat}) => {
   const dispatch = useDispatch();
-  const chatData = useSelector((state: RootState) => state.chatReducer);
 
   const handleSetChatOption = (option: ChatOptions) => dispatch(setChatOption(option));
+
+  const componentManager = () => {
+    if (chatData.participant?.id) {
+      return <p className='text-gray-800'>{chatData.participant.name}</p>
+    } else {
+      const participants = chatData.participants?.map(item => item.id === userData.id ? 'Tú' : item.name).join(', ');
+      return (
+        <>
+          <p className='text-gray-800'>{chatData.groupName}</p>
+          <p className='text-[13px] text-gray-500'>
+            {participants}
+          </p>
+        </>
+      )
+    }
+  }
 
   return (
     <div
@@ -79,8 +93,7 @@ const Draggable = ({appData, userData}: {appData: IApp, userData: IUser}) => {
                 </div>
 
                 <div className='ml-4 cursor-pointer'>
-                  <p className='text-gray-800'>Family</p>
-                  <p className='text-[13px] text-gray-500'>Tú, Emilio, Joaquin, Monica</p>
+                  {componentManager()}
                 </div>
               </div>
 

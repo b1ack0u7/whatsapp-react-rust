@@ -13,6 +13,7 @@ import { RootState } from '../redux/store';
 
 const Home = () => {
   const appData = useSelector((state: RootState) => state.appReducer);
+  const chatData = useSelector((state: RootState) => state.chatReducer);
   const userData = useSelector((state: RootState) => state.userReducer);
 
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
@@ -47,7 +48,7 @@ const Home = () => {
       
       { userData.id && socket &&
         <div className='flex flex-col h-screen '>
-          <Draggable appData={appData} userData={userData}/>
+          <Draggable appData={appData} userData={userData} chatData={chatData}/>
           <AnimatePresence mode='wait'>
             { appData.logoutRequested &&
               <Toast />
@@ -56,7 +57,7 @@ const Home = () => {
 
           <div className='flex-1 select-none bg-uiBG'>
             <div className='flex h-full'>
-              <SidebarChats chatRooms={userData.chatGroups} socket={socket}/>
+              <SidebarChats socket={socket} chatRooms={userData.chatGroups!} chatsInfo={appData.sideBarChats}/>
 
               <AnimatePresence mode='wait'>
                 { appData.sidebarMenuIsShown &&
@@ -73,7 +74,7 @@ const Home = () => {
                 }
               </AnimatePresence>
 
-              <ChatInstance socket={socket!}/>
+              <ChatInstance socket={socket!} userData={userData} chatReducer={chatData}/>
             </div>
           </div>
         </div>
