@@ -1,15 +1,21 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import UserCard from '../components/login/UserCard';
 import Draggable from '../components/ui/Draggable';
 import requester from '../helpers/Requester';
 import { IRequest, IUser } from '../interfaces/interfaces';
-import { useEffect, useState } from 'react';
-import UserCard from '../components/login/UserCard';
-import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '../redux/slices/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { RootState } from '../redux/store';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const appData = useSelector((state: RootState) => state.appReducer);
+  const chatData = useSelector((state: RootState) => state.chatReducer);
+  const userData = useSelector((state: RootState) => state.userReducer);
+
   const [userList, setUserList] = useState<IUser[]>([]);
 
   const fetchUsers = async() => {
@@ -29,7 +35,7 @@ const Login = () => {
 
   return (
     <div className='flex flex-col h-screen'>
-      <Draggable />
+      <Draggable appData={appData} userData={userData} chatData={chatData}/>
 
       <div className='absolute w-full h-full select-none bg-uiBG'>
         <div className='px-[20vh] py-[35vh] grid grid-cols-3 gap-2'>

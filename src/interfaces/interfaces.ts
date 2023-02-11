@@ -7,7 +7,6 @@ export interface IRequest<T> {
 }
 
 export interface IApp {
-  sidebarInfoIsShown: boolean;
   sidebarMenuIsShown: boolean;
   chatOption: ChatOptions;
   isLoading: boolean;
@@ -20,6 +19,7 @@ export interface IUser {
   name?: string;
   email?: string;
   chatGroups?: string[];
+  friendList?: IUser[];
   messages?: IMessage[];
 }
 

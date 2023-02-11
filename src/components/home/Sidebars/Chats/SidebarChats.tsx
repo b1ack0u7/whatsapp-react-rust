@@ -3,11 +3,11 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
-import requester from '../../helpers/Requester';
-import { joinRoom } from "../../helpers/Socket";
-import { IGroupChat, IRequest, IMessage } from '../../interfaces/interfaces';
-import { setSideBarChats } from "../../redux/slices/appSlice";
-import { setGroupChatData } from "../../redux/slices/chatSlice";
+import requester from '../../../../helpers/Requester';
+import { joinRoom } from "../../../../helpers/Socket";
+import { IGroupChat, IRequest, IMessage } from '../../../../interfaces/interfaces';
+import { setSideBarChats } from "../../../../redux/slices/appSlice";
+import { setGroupChatData } from "../../../../redux/slices/chatSlice";
 
 const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], socket: Socket, chatsInfo: IGroupChat[]}) => {
   const dispatch = useDispatch()
@@ -51,7 +51,7 @@ const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], sock
 
       <hr />
       
-      <div className="flex flex-col h-[538px] overflow-y-scroll">
+      <div className="flex flex-col h-[537px] overflow-y-scroll">
         { chatsInfo && socket &&
           chatsInfo.map((item, idx) => 
             <ItemChat key={idx} chatInfo={item}/>
@@ -104,10 +104,13 @@ const ItemChat = ({chatInfo}: {chatInfo: IGroupChat}) => {
 
               <AnimatePresence mode="wait">
                 { isHovered &&
-                  <motion.i
-                    className="absolute left-1 opacity-0 fi fi-br-angle-small-down text-gray-500 hover:text-gray-700"
+                  <motion.button
+                    className="absolute left-1 opacity-0 text-gray-500 hover:text-gray-700"
                     animate={{opacity: isHovered ? 1 : 0, x: isHovered ? -20 : 0}}
-                  />
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <i className="fi fi-br-angle-small-down"/>
+                  </motion.button>
                 }
               </AnimatePresence>
             </div>

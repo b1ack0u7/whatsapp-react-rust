@@ -3,7 +3,6 @@ import { ChatOptions } from "../../interfaces/enums";
 import { IApp, IGroupChat, IMessage } from '../../interfaces/interfaces';
 
 const initialState: IApp = {
-  sidebarInfoIsShown: false,
   sidebarMenuIsShown: false,
   chatOption: ChatOptions.messages,
   isLoading: false,
@@ -15,9 +14,6 @@ export const appSlice = createSlice({
   name: 'appSlice',
   initialState,
   reducers:{
-    setSidebarInfoShow: (state, action: PayloadAction<boolean>) => {
-      state.sidebarInfoIsShown = action.payload;
-    },
     setSidebarMenuShow: (state, action: PayloadAction<boolean>) => {
       state.sidebarMenuIsShown = action.payload;
     },
@@ -48,7 +44,6 @@ export const appSlice = createSlice({
 });
 
 export const {
-  setSidebarInfoShow,
   setSidebarMenuShow,
   setChatOption,
   setIsLoading,

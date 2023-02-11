@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { setSidebarMenuShow } from '../../../redux/slices/appSlice';
-import AccountMenu from './Account/AccountMenu';
-import SecurityMenu from './Security/SecurityMenu';
+import { setSidebarMenuShow } from '../../../../redux/slices/appSlice';
+import AccountMenu from './AccountMenu';
 
 const SidebarMenu = () => {
   const dispatch = useDispatch();
