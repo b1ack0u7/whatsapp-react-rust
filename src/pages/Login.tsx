@@ -21,7 +21,7 @@ const Login = () => {
   const fetchUsers = async() => {
     const respUsers:IRequest<IUser[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchUser'});
     if (!respUsers.success) return;
-    setUserList([...respUsers.response]);
+    setUserList(respUsers.response);
   }
 
   const handleSelectUser = (user: IUser):void => {

@@ -6,7 +6,7 @@ const Backdrop = ({ children, onClick, bgColor = '', blur = 4 }: {children?: any
       opacity: 1,
       transition: {
         when: "beforeChildren",
-        duration: 0.3,
+        duration: 0.2,
         delayChildren: 0.4
       }
     },
@@ -14,7 +14,7 @@ const Backdrop = ({ children, onClick, bgColor = '', blur = 4 }: {children?: any
       opacity: 0,
       transition: {
         when: "afterChildren",
-        duration: 0.3,
+        duration: 0.2,
       }
     }
   };

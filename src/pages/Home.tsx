@@ -6,7 +6,8 @@ import ChatInstance from '../components/home/ChatInstance';
 import SidebarManager from '../components/home/Sidebars/SidebarManager';
 import Draggable from '../components/ui/Draggable';
 import Loader from '../components/ui/Loader';
-import Toast from '../components/ui/Toast';
+import Toast from '../components/ui/Logout';
+import ToastAlert from '../components/ui/ToastAlert';
 import { initializeSocket } from '../helpers/Socket';
 import { RootState } from '../redux/store';
 
@@ -30,6 +31,8 @@ const Home = () => {
       {appData.isLoading &&
         <Loader />
       }
+
+      <ToastAlert />
       
       { userData.id && socket &&
         <div className='flex flex-col h-screen '>
