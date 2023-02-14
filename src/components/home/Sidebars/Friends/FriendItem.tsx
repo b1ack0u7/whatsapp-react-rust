@@ -5,7 +5,7 @@ import { EAlert } from '../../../../interfaces/enums';
 import { IUser } from '../../../../interfaces/interfaces';
 import { enqueueAlert } from '../../../../redux/slices/appSlice';
 
-const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, inheritedProps?: any}) => {
+const FriendItem = ({item, inheritedProps}: {item?: IUser, inheritedProps?: any}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -25,12 +25,12 @@ const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, inherited
 
         <div className="flex flex-1">
           <div className="flex-1">
-            <p className="">{friendData?.name}</p>
+            <p className="">{item?.name}</p>
             <button
               className="text-gray-500 text-[14px]"
-              onClick={() => handleCopyId(friendData?.id!)}
+              onClick={() => handleCopyId(item?.id!)}
             >
-                {friendData?.id}
+                {item?.id}
             </button>
           </div>
 

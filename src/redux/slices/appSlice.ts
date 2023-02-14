@@ -4,7 +4,7 @@ import { IApp, IGroupChat, IMessage, IAlert } from '../../interfaces/interfaces'
 
 const initialState: IApp = {
   chatOption: EChatOptions.messages,
-  isLoading: false,
+  isLoading: true,
   logoutRequested: false,
   queueAlert: [],
   sideBarChats: [],
@@ -28,7 +28,10 @@ export const appSlice = createSlice({
       state.logoutRequested = action.payload;
     },
     setSideBarChats: (state, action: PayloadAction<{initialChats?: IGroupChat[], incomingChat?: IMessage, initial?: boolean}>) => {
-      if (action.payload.initial === true) state.sideBarChats = action.payload.initialChats || [];
+      if (action.payload.initial === true) {
+        state.sideBarChats = action.payload.initialChats || [];
+        state.isLoading = false;
+      }
       else {
         let updated = false;
         const updatedChats = state.sideBarChats.map(item => {

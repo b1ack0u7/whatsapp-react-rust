@@ -30,8 +30,8 @@ const DropdownContainer = <T extends object>({
             <motion.button
               className='mt-[2px] disabled:cursor-not-allowed'
               animate={{
-                rotate: showContainer ? 0 : 180,
-                y: showContainer ? 0 : -2,
+                rotate: showContainer && arrayOfItems.length > 0 ? 0 : 180,
+                y: showContainer && arrayOfItems.length > 0 ? 0 : -2,
                 transition: {
                   ease: 'easeInOut',
                   duration: 0.15

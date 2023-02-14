@@ -1,5 +1,4 @@
-import React from 'react'
-import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Guard from '../helpers/Guard'
 import Home from '../pages/Home'
 import Login from '../pages/Login'

@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <>
-      <AnimatePresence mode='wait'>
+      <AnimatePresence initial={false} mode='wait'>
         {appData.isLoading &&
           <Loader />
         }

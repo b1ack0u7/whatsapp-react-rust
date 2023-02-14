@@ -5,7 +5,7 @@ import requester from '../../../../helpers/Requester';
 import { joinRoom } from "../../../../helpers/Socket";
 import { EAlert } from "../../../../interfaces/enums";
 import { IGroupChat, IMessage, IRequest } from '../../../../interfaces/interfaces';
-import { enqueueAlert, setSideBarChats } from "../../../../redux/slices/appSlice";
+import { enqueueAlert, setIsLoading, setSideBarChats } from "../../../../redux/slices/appSlice";
 import ChatItem from './ChatItem';
 
 const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], socket: Socket, chatsInfo: IGroupChat[]}) => {
@@ -13,7 +13,10 @@ const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], sock
   const [inputSearch, setInputSearch] = useState<string>('');
   
   const fetchChatInfo = async() => {
-    if (chatRooms.length === 0) return;
+    if (chatRooms.length === 0) {
+      dispatch(setIsLoading(false));
+      return;
+    };
     
     const respChatsInfo:IRequest<IGroupChat []> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: chatRooms, lastMessage: true}});
     if (!respChatsInfo.success) {
