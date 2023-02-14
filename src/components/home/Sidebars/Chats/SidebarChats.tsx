@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
 import requester from '../../../../helpers/Requester';
 import { joinRoom } from "../../../../helpers/Socket";
+import { EAlert } from "../../../../interfaces/enums";
 import { IGroupChat, IMessage, IRequest } from '../../../../interfaces/interfaces';
-import { setSideBarChats } from "../../../../redux/slices/appSlice";
+import { enqueueAlert, setSideBarChats } from "../../../../redux/slices/appSlice";
 import ChatItem from './ChatItem';
 
 const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], socket: Socket, chatsInfo: IGroupChat[]}) => {
@@ -15,7 +16,10 @@ const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], sock
     if (chatRooms.length === 0) return;
     
     const respChatsInfo:IRequest<IGroupChat []> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: chatRooms, lastMessage: true}});
-    if (!respChatsInfo.success) return;
+    if (!respChatsInfo.success) {
+      dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
+      return;
+    }
     
     dispatch(setSideBarChats({
       initialChats: respChatsInfo.response,

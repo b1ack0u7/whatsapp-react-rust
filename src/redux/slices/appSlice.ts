@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChatOptions } from "../../interfaces/enums";
-import { IApp, IGroupChat, IMessage } from '../../interfaces/interfaces';
+import { EChatOptions } from "../../interfaces/enums";
+import { IApp, IGroupChat, IMessage, IAlert } from '../../interfaces/interfaces';
 
 const initialState: IApp = {
-  sidebarMenuIsShown: false,
-  chatOption: ChatOptions.messages,
+  chatOption: EChatOptions.messages,
   isLoading: false,
   logoutRequested: false,
+  queueAlert: [],
   sideBarChats: [],
+  sidebarMenuIsShown: false,
 };
 
 export const appSlice = createSlice({
@@ -17,7 +18,7 @@ export const appSlice = createSlice({
     setSidebarMenuShow: (state, action: PayloadAction<boolean>) => {
       state.sidebarMenuIsShown = action.payload;
     },
-    setChatOption: (state, action: PayloadAction<ChatOptions>) => {
+    setChatOption: (state, action: PayloadAction<EChatOptions>) => {
       state.chatOption = action.payload;
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -39,6 +40,20 @@ export const appSlice = createSlice({
         });
         if (updated) state.sideBarChats = updatedChats;
       }
+    },
+    enqueueAlert: (state, action: PayloadAction<{type?: string, alertData?: IAlert}>) => {
+      if (action.payload.type === 'reload') {
+        if (state.queueAlert.length > 0) {
+          state.currentAlert = state.queueAlert[0];
+          state.queueAlert.shift();
+        }
+      } else {
+        if (!state.currentAlert) state.currentAlert = action.payload.alertData;
+        else state.queueAlert.push(action.payload.alertData!);
+      }
+    },
+    resetCurrentAlert: (state) => {
+      state.currentAlert = undefined;
     }
   }
 });
@@ -49,4 +64,6 @@ export const {
   setIsLoading,
   setLogoutRequest,
   setSideBarChats,
+  enqueueAlert,
+  resetCurrentAlert,
 } = appSlice.actions;

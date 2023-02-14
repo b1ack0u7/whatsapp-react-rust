@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import UserCard from '../components/login/UserCard';
 import Draggable from '../components/ui/Draggable';
 import requester from '../helpers/Requester';
+import { EAlert } from '../interfaces/enums';
 import { IRequest, IUser } from '../interfaces/interfaces';
+import { enqueueAlert } from '../redux/slices/appSlice';
 import { setCurrentUser } from '../redux/slices/userSlice';
 import { RootState } from '../redux/store';
 
@@ -20,7 +22,10 @@ const Login = () => {
 
   const fetchUsers = async() => {
     const respUsers:IRequest<IUser[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchUser'});
-    if (!respUsers.success) return;
+    if (!respUsers.success) {
+      dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
+      return;
+    }
     setUserList(respUsers.response);
   }
 

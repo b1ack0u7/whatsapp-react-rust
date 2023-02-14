@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setLogoutRequest } from '../../redux/slices/appSlice';
 import Backdrop from './Backdrop';
 
-const Toast = () => {
+const Logout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -58,4 +58,4 @@ const Toast = () => {
   )
 }
 
-export default Toast
+export default Logout

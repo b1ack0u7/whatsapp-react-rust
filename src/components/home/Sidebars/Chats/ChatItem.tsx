@@ -9,16 +9,12 @@ const ChatItem = ({chatInfo}: {chatInfo: IGroupChat}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const handleSelectChat = () => {
-    dispatch(setGroupChatData(chatInfo));
-  }
-
   return (
     <div
       className="py-[11px] border-b transition hover:bg-gray-100 cursor-pointer text-left"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => handleSelectChat()}
+      onClick={() => dispatch(setGroupChatData(chatInfo))}
     >
       <div className="flex gap-x-4 mx-4">
         <div className="w-[50px] h-[50px] bg-slate-300 rounded-full"/>

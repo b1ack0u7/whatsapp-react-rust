@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IUser } from '../../../../interfaces/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, enableAddButton?: boolean, inheritedProps?: any}) => {
+const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, inheritedProps?: any}) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
@@ -29,26 +29,46 @@ const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, enableAdd
             <p className="text-emerald-400 text-[12px] font-bold">Mi estado</p>
 
             <div className="relative">
+              { inheritedProps?.enableAcceptRejectButton &&
+                <motion.div
+                  className='flex gap-x-1'
+                  animate={{x: isHovered && inheritedProps.showOptions ? -18 : 0}}
+                >
+                  <button
+                  >
+                    <i className="fi fi-sr-add text-[22px] mt-[2px] text-blue-500"/>
+                  </button>
+
+                  <button
+                    className='w-[25px] h-[25px]'
+                  >
+                    <i className="fi fi-sr-cross-circle text-[22px] mt-[2px] text-red-500"/>
+                  </button>
+                </motion.div>
+              }
+
               { inheritedProps?.enableAddButton &&
                 <motion.button
-                  animate={{x: isHovered ? -18 : 0}}
+                  animate={{x: isHovered && inheritedProps.showOptions ? -18 : 0}}
                   className="absolute right-0 flex items-center justify-center w-[25px] h-[25px] rounded-full bg-emerald-400"
                 >
                   <i className="fi fi-rr-user-add text-[14px] mt-[2px] text-white"/>
                 </motion.button>
               }
 
-              <AnimatePresence mode="wait">
-                { isHovered &&
-                  <motion.button
-                    className="absolute left-1 opacity-0 text-gray-500 hover:text-gray-700"
-                    animate={{opacity: isHovered ? 1 : 0, x: isHovered ? -20 : 0}}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <i className="fi fi-br-angle-small-down"/>
-                  </motion.button>
-                }
-              </AnimatePresence>
+              { inheritedProps.showOptions &&
+                <AnimatePresence mode="wait">
+                  { isHovered &&
+                    <motion.button
+                      className="absolute left-1 opacity-0 text-gray-500 hover:text-gray-700"
+                      animate={{opacity: isHovered ? 1 : 0, x: isHovered ? -20 : 0}}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <i className="fi fi-br-angle-small-down"/>
+                    </motion.button>
+                  }
+                </AnimatePresence>
+              }
             </div>
           </div>
         </div>

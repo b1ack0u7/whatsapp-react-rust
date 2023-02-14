@@ -1,42 +1,45 @@
-import { ChatOptions } from "./enums";
+import { EAlert, EChatOptions } from "./enums";
 
-export interface IRequest<T> {
-  success: boolean;
-  response: T;
-  reason?: T;
+export interface IAlert {
+  alertType: EAlert;
+  message?: string;
+  dismissTime?: number;
 }
 
 export interface IApp {
-  sidebarMenuIsShown: boolean;
-  chatOption: ChatOptions;
+  chatOption: EChatOptions;
+  currentAlert?: IAlert;
   isLoading: boolean;
   logoutRequested: boolean;
+  queueAlert: IAlert[];
   sideBarChats: IGroupChat[];
+  sidebarMenuIsShown: boolean;
 }
 
-export interface IUser {
-  id?: string;
-  name?: string;
-  email?: string;
-  chatGroups?: string[];
-  friendList?: IUser[];
-  messages?: IMessage[];
-}
-
-export interface IMessage {
-  id?: string;
-  idGroup?: string;
-  message?: string;
-  timestamp?: string;
-  sender?: IUser
+export interface IChat extends IGroupChat, ISingleChat {
+  messages?: IUser[];
 }
 
 export interface IGroupChat {
   id?: string;
   creationDate?: string;
   groupName?: string;
-  participants?: IUser[];
   lastMessage?: IMessage;
+  participants?: IUser[];
+}
+
+export interface IMessage {
+  id?: string;
+  idGroup?: string;
+  message?: string;
+  sender?: IUser
+  timestamp?: string;
+}
+
+export interface IRequest<T> {
+  success: boolean;
+  response: T;
+  reason?: T;
 }
 
 export interface ISingleChat {
@@ -50,6 +53,11 @@ export interface ISocket {
   dataTransport: unknown;
 }
 
-export interface IChat extends IGroupChat, ISingleChat {
-  messages?: IUser[];
+export interface IUser {
+  id?: string;
+  chatGroups?: string[];
+  email?: string;
+  friendList?: IUser[];
+  messages?: IMessage[];
+  name?: string;
 }

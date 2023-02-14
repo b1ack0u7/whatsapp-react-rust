@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Socket } from 'socket.io-client';
-import { ChatOptions } from '../../../interfaces/enums';
+import { EChatOptions } from '../../../interfaces/enums';
 import { IApp, IUser } from '../../../interfaces/interfaces';
 import SidebarChats from './Chats/SidebarChats';
 import SidebarFriends from './Friends/SidebarFriends';
@@ -39,11 +39,11 @@ const SidebarManager = ({socket, userData, appData}: {socket: Socket, userData: 
       </AnimatePresence>
 
       <AnimatePresence>
-        { appData.chatOption === ChatOptions.messages &&
+        { appData.chatOption === EChatOptions.messages &&
           <SidebarChats socket={socket} chatRooms={userData.chatGroups!} chatsInfo={appData.sideBarChats}/>
         }
 
-        { appData.chatOption === ChatOptions.friends && 
+        { appData.chatOption === EChatOptions.friends && 
           <SidebarFriends userData={userData}/>
         }
       </AnimatePresence>

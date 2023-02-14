@@ -1,14 +1,14 @@
 import { appWindow } from '@tauri-apps/api/window';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
-import { ChatOptions } from '../../interfaces/enums';
+import { EChatOptions } from '../../interfaces/enums';
 import { IApp, IChat, IUser } from '../../interfaces/interfaces';
 import { setChatOption, setLogoutRequest, setSidebarMenuShow } from '../../redux/slices/appSlice';
 
 const Draggable = ({appData, userData, chatData}: {appData: IApp, userData: IUser, chatData: IChat}) => {
   const dispatch = useDispatch();
 
-  const handleSetChatOption = (option: ChatOptions) => dispatch(setChatOption(option));
+  const handleSetChatOption = (option: EChatOptions) => dispatch(setChatOption(option));
 
   const componentManager = () => {
     if (chatData.participant?.id) {
@@ -55,25 +55,25 @@ const Draggable = ({appData, userData, chatData}: {appData: IApp, userData: IUse
             <div className='flex flex-1 relative justify-between ml-4 mt-[6px] text-gray-600'>
               <motion.div
                 className='absolute -bottom-[13px] w-[25px] border-b-[1.5px] border-emerald-500'
-                animate={{x: appData.chatOption === ChatOptions.messages ? -3 : appData.chatOption === ChatOptions.other ? 40 : appData.chatOption === ChatOptions.friends ? 80 : -3}}
+                animate={{x: appData.chatOption === EChatOptions.messages ? -3 : appData.chatOption === EChatOptions.other ? 40 : appData.chatOption === EChatOptions.friends ? 80 : -3}}
               />
               <div className='flex gap-x-6'>
                 <button
-                  onClick={() => handleSetChatOption(ChatOptions.messages)}
+                  onClick={() => handleSetChatOption(EChatOptions.messages)}
                 >
-                  <i className={`fi fi-rr-comment-alt cursor-pointer transition ${appData.chatOption === ChatOptions.messages && 'text-black'} hover:text-black`}/>
+                  <i className={`fi fi-rr-comment-alt cursor-pointer transition ${appData.chatOption === EChatOptions.messages && 'text-black'} hover:text-black`}/>
                 </button>
 
                 <button
-                  onClick={() => handleSetChatOption(ChatOptions.other)}
+                  onClick={() => handleSetChatOption(EChatOptions.other)}
                 >
-                  <i className={`fi fi-rr-comments cursor-pointer transition ${appData.chatOption === ChatOptions.other && 'text-black'} hover:text-black`}/>
+                  <i className={`fi fi-rr-comments cursor-pointer transition ${appData.chatOption === EChatOptions.other && 'text-black'} hover:text-black`}/>
                 </button>
 
                 <button
-                  onClick={() => handleSetChatOption(ChatOptions.friends)}
+                  onClick={() => handleSetChatOption(EChatOptions.friends)}
                 >
-                  <i className={`fi fi-rr-users cursor-pointer transition ${appData.chatOption === ChatOptions.friends && 'text-black'} hover:text-black`}/>
+                  <i className={`fi fi-rr-users cursor-pointer transition ${appData.chatOption === EChatOptions.friends && 'text-black'} hover:text-black`}/>
                 </button>
               </div>
 

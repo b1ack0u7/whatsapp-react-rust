@@ -1,21 +1,29 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import banner from '../../assets/banner-chat-light.svg';
 import BG from '../../assets/bg-chat.png';
 import requester from '../../helpers/Requester';
+import { EAlert } from '../../interfaces/enums';
 import { IChat, IMessage, IRequest, IUser } from '../../interfaces/interfaces';
+import { enqueueAlert } from '../../redux/slices/appSlice';
 import IncomingMessage from './IncomingMessage';
 import InputField from './InputField';
 import OutgoingMessage from './OutgoingMessage';
 
 const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatReducer: IChat, userData: IUser}) => {
+  const dispatch = useDispatch();
+  
   const [chatData, setChatData] = useState<IChat>(chatReducer);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
   const fetchMessages = async() => {
     setChatData({...chatReducer});
     const respMessages:IRequest<IMessage[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupMessages', params:{idGroup: chatReducer.id}});
-    if (!respMessages.success) return;
+    if (!respMessages.success) {
+      dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
+      return;
+    }
     setMessages(respMessages.response);
   }
   

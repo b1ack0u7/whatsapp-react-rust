@@ -1,11 +1,16 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import requester from '../../../../helpers/Requester';
+import { EAlert } from '../../../../interfaces/enums';
 import { IRequest, IUser } from '../../../../interfaces/interfaces';
+import { enqueueAlert } from '../../../../redux/slices/appSlice';
 import DropdownContainer from './DropdownContainer';
 import FriendItem from './FriendItem';
 
 const SidebarFriends = ({userData}: {userData: IUser}) => {
+  const dispatch = useDispatch();
+
   const [inputSearch, setInputSearch] = useState<string>('');
   const [searchBy, setSearchBy] = useState<number>(0);
   const [searchList, setSearchList] = useState<IUser []>([]);
@@ -22,6 +27,7 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
     if (!respUsersInfo.success) {
       setSearchList([]);
       setShowSearchResuls(false);
+      dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
       return;
     };
     
@@ -34,6 +40,14 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
     } else {
       const { id } = respUsersInfo.response as IUser;
       if (!friendIds.has(id)) tmpSearchList = [respUsersInfo.response as IUser];
+    }
+
+    if (tmpSearchList.length === 0) {
+      setSearchList([]);
+      setShowSearchResuls(false);
+      setInputSearch('');
+      dispatch(enqueueAlert({alertData: {alertType: EAlert.info, message: 'No hay resultados'}}));
+      return;
     }
 
     setSearchList([...tmpSearchList]);
@@ -85,7 +99,11 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
         <DropdownContainer
           arrayOfItems={userData.friendList!}
           Children={FriendItem}
-          childrenProps={{enableAddButton: false}}
+          childrenProps={{
+            enableAcceptRejectButton: false,
+            enableAddButton: false,
+            showOptions: true,
+          }}
           label='Mis amigos'
           setShowContainer={setShowFriends}
           showContainer={showFriends}
@@ -94,7 +112,11 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
         <DropdownContainer
           arrayOfItems={searchList}
           Children={FriendItem}
-          childrenProps={{enableAddButton: true}}
+          childrenProps={{
+            enableAcceptRejectButton: false,
+            enableAddButton: true,
+            showOptions: false
+          }}
           label='Resultados de busqueda'
           setShowContainer={setShowSearchResuls}
           showContainer={showSearchResuls}

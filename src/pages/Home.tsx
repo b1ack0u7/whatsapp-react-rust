@@ -6,7 +6,7 @@ import ChatInstance from '../components/home/ChatInstance';
 import SidebarManager from '../components/home/Sidebars/SidebarManager';
 import Draggable from '../components/ui/Draggable';
 import Loader from '../components/ui/Loader';
-import Toast from '../components/ui/Logout';
+import Logout from '../components/ui/Logout';
 import ToastAlert from '../components/ui/ToastAlert';
 import { initializeSocket } from '../helpers/Socket';
 import { RootState } from '../redux/store';
@@ -28,11 +28,17 @@ const Home = () => {
 
   return (
     <>
-      {appData.isLoading &&
-        <Loader />
-      }
-
-      <ToastAlert />
+      <AnimatePresence mode='wait'>
+        {appData.isLoading &&
+          <Loader />
+        }
+      </AnimatePresence>
+      
+      <AnimatePresence mode='wait'>
+        { appData.currentAlert &&
+          <ToastAlert alertData={appData.currentAlert}/>
+        }
+      </AnimatePresence>
       
       { userData.id && socket &&
         <div className='flex flex-col h-screen '>
@@ -40,7 +46,7 @@ const Home = () => {
           
           <AnimatePresence mode='wait'>
             { appData.logoutRequested &&
-              <Toast />
+              <Logout />
             }
           </AnimatePresence>
 
