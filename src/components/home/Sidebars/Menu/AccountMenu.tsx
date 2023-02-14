@@ -1,13 +1,20 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/store';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { EAlert } from '../../../../interfaces/enums';
+import { enqueueAlert } from '../../../../redux/slices/appSlice';
+import { RootState } from '../../../../redux/store';
 
 const AccountMenu = () => {
+  const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer);
 
   const [userName, setUserName] = useState<string>(userData.name!);
   const [activeEditMode, setActiveEditMode] = useState<boolean>(false);
+
+  const handleCopyId = (id: string) => {
+    navigator.clipboard.writeText(id)
+    dispatch(enqueueAlert({alertData: {alertType: EAlert.info, message: 'ID copiado'}}));
+  }
 
   return (
     <div className='flex flex-col gap-y-6 mt-6 mb-4'>
@@ -39,7 +46,7 @@ const AccountMenu = () => {
         <p className='text-[#018068] text-[14px]'>Tu ID</p>
         <div className='flex justify-between'>
           <p className='text-gray-700'>{userData.id}</p>
-          <button onClick={() => navigator.clipboard.writeText(userData.id!)}>
+          <button onClick={() => handleCopyId(userData.id!)}>
             <i className='fi fi-rr-copy-alt text-gray-500'/>
           </button>
         </div>

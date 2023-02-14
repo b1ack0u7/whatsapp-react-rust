@@ -42,7 +42,7 @@ const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatRedu
   return (
     <>
       { chatData.id ?
-        <div className='flex flex-col flex-1'>
+        <div className='relative flex flex-col flex-1'>
           <div className='absolute w-full h-full bg-chatBG z-0'/>
           <div
             className='absolute w-full h-full opacity-50 z-10'
@@ -52,8 +52,8 @@ const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatRedu
             }}
           />
 
-          <div className='z-10'>
-            <div className='flex flex-col h-[530px] overflow-y-scroll mx-6 mt-1 pb-4 gap-y-[2px]'>
+          <div className='absolute w-full h-full flex flex-col justify-between z-10'>
+            <div className='flex flex-col overflow-y-scroll mx-6 mt-1 pb-4 gap-y-[2px]'>
               { 
                 messages.map((item, idx) => handleConditionalRender(item, idx))
               }
@@ -69,8 +69,9 @@ const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatRedu
         </div>
         :
         <div className='flex-1 relative'>
-          <div className='absolute left-[25%] top-[30%]'>
+          <div className='absolute flex w-full h-full'>
             <img
+              className='mx-auto w-[60%]'
               src={banner}
               onDragStart={(e) => e.preventDefault()}
             />

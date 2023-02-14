@@ -1,9 +1,18 @@
-import { useState } from 'react';
-import { IUser } from '../../../../interfaces/interfaces';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { EAlert } from '../../../../interfaces/enums';
+import { IUser } from '../../../../interfaces/interfaces';
+import { enqueueAlert } from '../../../../redux/slices/appSlice';
 
 const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, inheritedProps?: any}) => {
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  const handleCopyId = (id: string) => {
+    navigator.clipboard.writeText(id)
+    dispatch(enqueueAlert({alertData: {alertType: EAlert.info, message: 'ID copiado'}}));
+  }
 
   return (
     <div
@@ -19,7 +28,7 @@ const FriendItem = ({item: friendData, inheritedProps}: {item?: IUser, inherited
             <p className="">{friendData?.name}</p>
             <button
               className="text-gray-500 text-[14px]"
-              onClick={() => navigator.clipboard.writeText(friendData?.id!)}
+              onClick={() => handleCopyId(friendData?.id!)}
             >
                 {friendData?.id}
             </button>

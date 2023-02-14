@@ -22,7 +22,7 @@ const Backdrop = ({ children, onClick, bgColor = '', blur = 4 }: {children?: any
   return (
     <motion.div
       onClick={onClick}
-      className = {`fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-10 backdrop-blur-[${blur}px] ${bgColor}`}
+      className = {`fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-20 backdrop-blur-[${blur}px] ${bgColor}`}
       initial = "hidden"
       animate = "visible"
       exit = "hidden"

@@ -61,7 +61,7 @@ const InitialMessage = ({message, animation}: {message: IMessage, animation: any
         <div className='absolute -left-4 top-0 w-0 h-0 border-r-white border-t-0 border-r-[20px] border-b-[15px] border-b-transparent rounded-tl-md'/>
 
         <div className='relative'>
-          <p className='text-[14px] font-medium text-green-500 hover:underline hover:cursor-pointer'>{message.sender?.name}</p>
+          <p className='text-[14px] font-medium inline-block text-green-500 hover:underline hover:cursor-pointer'>{message.sender?.name}</p>
           <AnimatePresence mode="wait">
             { isHovered &&
               <>
