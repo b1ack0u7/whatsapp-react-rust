@@ -9,7 +9,11 @@ export interface IAlert {
 export interface IApp {
   chatOption: EChatOptions;
   currentAlert?: IAlert;
-  isLoading: boolean;
+  isLoading: {
+    chats: boolean, 
+    rehydrate: boolean
+  };
+  loggedInRecently: boolean
   logoutRequested: boolean;
   queueAlert: IAlert[];
   sideBarChats: IGroupChat[];
@@ -58,6 +62,7 @@ export interface IUser {
   chatGroups?: string[];
   email?: string;
   friendList?: IUser[];
+  friendRequest?: IUser[];
   messages?: IMessage[];
   name?: string;
 }

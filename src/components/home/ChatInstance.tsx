@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { AnyAction, Dispatch } from 'redux';
 import { Socket } from 'socket.io-client';
 import banner from '../../assets/banner-chat-light.svg';
 import BG from '../../assets/bg-chat.png';
@@ -11,9 +11,7 @@ import IncomingMessage from './IncomingMessage';
 import InputField from './InputField';
 import OutgoingMessage from './OutgoingMessage';
 
-const ChatInstance = ({socket, chatReducer, userData}: {socket: Socket, chatReducer: IChat, userData: IUser}) => {
-  const dispatch = useDispatch();
-  
+const ChatInstance = ({socket, chatReducer, userData, dispatch}: {socket: Socket, chatReducer: IChat, userData: IUser, dispatch: Dispatch<AnyAction>}) => { 
   const [chatData, setChatData] = useState<IChat>(chatReducer);
   const [messages, setMessages] = useState<IMessage[]>([]);
 

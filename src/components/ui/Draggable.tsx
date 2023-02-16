@@ -1,13 +1,11 @@
 import { appWindow } from '@tauri-apps/api/window';
 import { motion } from 'framer-motion';
-import { useDispatch } from 'react-redux';
+import { AnyAction, Dispatch } from 'redux';
 import { EChatOptions } from '../../interfaces/enums';
 import { IApp, IChat, IUser } from '../../interfaces/interfaces';
 import { setChatOption, setLogoutRequest, setSidebarMenuShow } from '../../redux/slices/appSlice';
 
-const Draggable = ({appData, userData, chatData}: {appData: IApp, userData: IUser, chatData: IChat}) => {
-  const dispatch = useDispatch();
-
+const Draggable = ({appData, userData, chatData, dispatch}: {appData: IApp, userData: IUser, chatData: IChat, dispatch: Dispatch<AnyAction>}) => {
   const handleSetChatOption = (option: EChatOptions) => dispatch(setChatOption(option));
 
   const componentManager = () => {

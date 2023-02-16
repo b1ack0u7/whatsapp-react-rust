@@ -14,7 +14,7 @@ const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], sock
   
   const fetchChatInfo = async() => {
     if (chatRooms.length === 0) {
-      dispatch(setIsLoading(false));
+      dispatch(setIsLoading({target: 'chats', value: false}));
       return;
     };
     

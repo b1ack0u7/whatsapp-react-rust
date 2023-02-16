@@ -6,7 +6,7 @@ import Draggable from '../components/ui/Draggable';
 import requester from '../helpers/Requester';
 import { EAlert } from '../interfaces/enums';
 import { IRequest, IUser } from '../interfaces/interfaces';
-import { enqueueAlert } from '../redux/slices/appSlice';
+import { enqueueAlert, setLoggedInRecently } from '../redux/slices/appSlice';
 import { setCurrentUser } from '../redux/slices/userSlice';
 import { RootState } from '../redux/store';
 
@@ -30,6 +30,7 @@ const Login = () => {
   }
 
   const handleSelectUser = (user: IUser):void => {
+    dispatch(setLoggedInRecently(true));
     dispatch(setCurrentUser(user));
     navigate('/home', {replace: true});
   }
@@ -40,7 +41,7 @@ const Login = () => {
 
   return (
     <div className='flex flex-col h-screen'>
-      <Draggable appData={appData} userData={userData} chatData={chatData}/>
+      <Draggable appData={appData} userData={userData} chatData={chatData} dispatch={dispatch}/>
 
       <div className='absolute w-full h-full select-none bg-uiBG'>
         <div className='px-[20vh] py-[35vh] grid grid-cols-3 gap-2'>
