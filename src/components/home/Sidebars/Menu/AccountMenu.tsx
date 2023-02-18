@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { EAlert } from '../../../../interfaces/enums';
 import { enqueueAlert } from '../../../../redux/slices/appSlice';
@@ -8,6 +8,8 @@ const AccountMenu = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer);
 
+  const inputRef = useRef<any>(undefined);
+
   const [userName, setUserName] = useState<string>(userData.name!);
   const [activeEditMode, setActiveEditMode] = useState<boolean>(false);
 
@@ -15,6 +17,10 @@ const AccountMenu = () => {
     navigator.clipboard.writeText(id)
     dispatch(enqueueAlert({alertData: {alertType: EAlert.info, message: 'ID copiado'}}));
   }
+
+  useEffect(() => {
+    if (activeEditMode) inputRef.current.focus();
+  }, [activeEditMode]);
 
   return (
     <div className='flex flex-col gap-y-6 mt-6 mb-4'>
@@ -25,14 +31,15 @@ const AccountMenu = () => {
 
         <div className='flex justify-between'>
           <input 
-            className='mb-1 appearance-none focus:outline-none'
+            className='mb-1 appearance-none bg-white focus:outline-none'
             type='text'
             value={userName}
+            ref={inputRef}
             placeholder='Tu nombre'
             onChange={(e) => setUserName(e.target.value)}
             disabled={!activeEditMode}
           />
-          <button onClick={() => setActiveEditMode(mode => !mode)}>
+          <button onClick={() =>  setActiveEditMode(mode => !mode)}>
             { activeEditMode ?
               <i className='fi fi-br-cross text-gray-500'/>
               :

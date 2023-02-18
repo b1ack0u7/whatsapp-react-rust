@@ -69,7 +69,7 @@ const ChatInstance = ({socket, chatReducer, userData, dispatch}: {socket: Socket
         <div className='flex-1 relative'>
           <div className='absolute flex w-full h-full'>
             <img
-              className='mx-auto w-[60%]'
+              className='mx-auto w-[25rem]'
               src={banner}
               onDragStart={(e) => e.preventDefault()}
             />

@@ -54,6 +54,10 @@ const Draggable = ({appData, userData, chatData, dispatch}: {appData: IApp, user
               <motion.div
                 className='absolute -bottom-[13px] w-[25px] border-b-[1.5px] border-emerald-500'
                 animate={{x: appData.chatOption === EChatOptions.messages ? -3 : appData.chatOption === EChatOptions.other ? 40 : appData.chatOption === EChatOptions.friends ? 80 : -3}}
+                transition={{
+                  duration: 0.15,
+                  ease: 'easeInOut'
+                }}
               />
               <div className='flex gap-x-6'>
                 <button

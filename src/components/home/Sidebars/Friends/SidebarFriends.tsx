@@ -32,7 +32,8 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
     };
     
     let tmpSearchList:IUser[] = [];
-    const friendIds = new Set(userData.friendList?.map(item => item.id) || []);
+    let friendIds = new Set(userData.friendList?.map(item => item.id) || []);
+    friendIds.add(userData.id);
     if (searchBy === 0) {
       for (let user of respUsersInfo.response as IUser[]) {
         if (!friendIds.has(user.id)) tmpSearchList.push(user);
