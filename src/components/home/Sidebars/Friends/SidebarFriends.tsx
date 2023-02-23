@@ -21,7 +21,7 @@ const SidebarFriends = ({userData}: {userData: IUser}) => {
     if (searchBy === 1 && inputSearch.length === 0) return;
 
     const respUsersInfo: IRequest<IUser[] | IUser> = await requester({
-      url: 'http://localhost:4002/whatsapp/fetchUser',
+      url: '/fetchUser',
       params: {[searchBy === 0 ? 'userName' : 'idUser']: inputSearch}
     });
     if (!respUsersInfo.success) {

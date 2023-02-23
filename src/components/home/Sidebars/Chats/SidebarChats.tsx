@@ -18,7 +18,7 @@ const SidebarChats = ({chatRooms, socket, chatsInfo}: {chatRooms: string[], sock
       return;
     };
     
-    const respChatsInfo:IRequest<IGroupChat []> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupInfo', params:{id: chatRooms, lastMessage: true}});
+    const respChatsInfo:IRequest<IGroupChat []> = await requester({url: '/fetchGroupInfo', params:{id: chatRooms, lastMessage: true}});
     if (!respChatsInfo.success) {
       dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
       return;

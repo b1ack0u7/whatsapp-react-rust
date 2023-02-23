@@ -3,8 +3,8 @@ import { IRequest } from '../interfaces/interfaces';
 
 const requester = async <T>({ url, method = "GET", data = {}, params = {} }: {url:string, method?:string, data?:unknown, params?:unknown}) => {
   return Axios({
-    // headers: { authtoken: process.env.REACT_APP_AUTHTOKEN },
-    // baseURL: process.env.REACT_APP_URL,
+    headers: { secretkey: import.meta.env.VITE_SECRETKEY },
+    baseURL: import.meta.env.VITE_ENDPOINT+'/whatsapp',
     url,
     method, 
     data,

@@ -28,7 +28,7 @@ const Home = () => {
     initializeSocket(setSocket);
 
     if (!appData.loggedInRecently) {
-      const respUser: IRequest<IUser> = await requester({url: 'http://localhost:4002/whatsapp/fetchUser', params: {idUser: userData.id}});
+      const respUser: IRequest<IUser> = await requester({url: '/fetchUser', params: {idUser: userData.id}});
       if (!respUser.success) return;
   
       const updatedData: IUser = {

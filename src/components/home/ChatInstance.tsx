@@ -17,7 +17,7 @@ const ChatInstance = ({socket, chatReducer, userData, dispatch}: {socket: Socket
 
   const fetchMessages = async() => {
     setChatData({...chatReducer});
-    const respMessages:IRequest<IMessage[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchGroupMessages', params:{idGroup: chatReducer.id}});
+    const respMessages:IRequest<IMessage[]> = await requester({url: '/fetchGroupMessages', params:{idGroup: chatReducer.id}});
     if (!respMessages.success) {
       dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
       return;

@@ -21,7 +21,7 @@ const Login = () => {
   const [userList, setUserList] = useState<IUser[]>([]);
 
   const fetchUsers = async() => {
-    const respUsers:IRequest<IUser[]> = await requester({url: 'http://localhost:4002/whatsapp/fetchUser'});
+    const respUsers:IRequest<IUser[]> = await requester({url: '/fetchUser'});
     if (!respUsers.success) {
       dispatch(enqueueAlert({alertData: {alertType: EAlert.error}}));
       return;
