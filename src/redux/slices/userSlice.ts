@@ -12,16 +12,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setCurrentUser: (state, action: PayloadAction<IUser>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.chatGroups = action.payload.chatGroups;
-      localStorage.setItem('currentUser', JSON.stringify(action.payload));
+      const newState = {...state, ...action.payload};
+      localStorage.setItem('currentUser', JSON.stringify(newState));
+      return {...newState};
     },
-    updateCurrentUser: (state: any, action: PayloadAction<IUser | any>) => {
-      const keys = Object.keys(action.payload);
-      keys.forEach(key => state[key] = action.payload[key]);
-      localStorage.setItem('currentUser', JSON.stringify(state));
+    updateCurrentUser: (state: any, action: PayloadAction<IUser>) => {
+      const newState = {...state, ...action.payload};
+      localStorage.setItem('currentUser', JSON.stringify(newState));
+      return {...newState};
     }
   }
 });

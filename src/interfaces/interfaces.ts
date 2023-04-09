@@ -28,6 +28,7 @@ export interface IGroupChat {
   id?: string;
   creationDate?: string;
   groupName?: string;
+  photoURL?: string;
   lastMessage?: IMessage;
   participants?: IUser[];
 }
@@ -61,6 +62,7 @@ export interface IUser {
   id?: string;
   chatGroups?: string[];
   email?: string;
+  photoURL?: string;
   friendList?: IUser[];
   friendRequest?: IUser[];
   messages?: IMessage[];

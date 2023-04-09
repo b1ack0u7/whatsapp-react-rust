@@ -30,11 +30,16 @@ const Home = () => {
     if (!appData.loggedInRecently) {
       const respUser: IRequest<IUser> = await requester({url: '/fetchUser', params: {idUser: userData.id}});
       if (!respUser.success) return;
-  
+      
+      const cacheBuster = Math.random().toString(36).substring(7);
+      const profilePicture = await fetch(respUser.response.photoURL+`?t=${cacheBuster}` || '');
+      const blob = await profilePicture.blob();
+
       const updatedData: IUser = {
         chatGroups: respUser.response.chatGroups,
         friendList: respUser.response.friendList,
-        friendRequest: respUser.response.friendRequest
+        friendRequest: respUser.response.friendRequest,
+        photoURL: URL.createObjectURL(blob),
       };
       dispatch(updateCurrentUser(updatedData));
     }

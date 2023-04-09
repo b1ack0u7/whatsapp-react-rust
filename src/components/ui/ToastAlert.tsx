@@ -65,7 +65,7 @@ const ToastAlert = ({alertData}: {alertData: IAlert}) => {
 
   return (
     <motion.div
-      className='absolute flex -bottom-[70px] w-full'
+      className='absolute flex -bottom-[70px] w-full z-30'
       initial={{y: 0}}
       animate={{y: -100}}
       exit={{y: 0}}

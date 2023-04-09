@@ -1,9 +1,9 @@
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import { IRequest } from '../interfaces/interfaces';
 
-const requester = async <T>({ url, method = "GET", data = {}, params = {} }: {url:string, method?:string, data?:unknown, params?:unknown}) => {
+const requester = async <T>({ url, method = "GET", data = {}, params = {}, extraHeaders = {} }: {url:string, method?:string, data?:unknown, params?:unknown, extraHeaders?:any}) => {
   return Axios({
-    headers: { secretkey: import.meta.env.VITE_SECRETKEY },
+    headers: { secretkey: import.meta.env.VITE_SECRETKEY, ...extraHeaders },
     baseURL: import.meta.env.VITE_ENDPOINT+'/whatsapp',
     url,
     method, 

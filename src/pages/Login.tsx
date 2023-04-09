@@ -29,9 +29,13 @@ const Login = () => {
     setUserList(respUsers.response);
   }
 
-  const handleSelectUser = (user: IUser):void => {
+  const handleSelectUser = async(user: IUser): Promise<void> => {
+    const cacheBuster = Math.random().toString(36).substring(7);
+    const profilePicture = await fetch(user.photoURL+`?t=${cacheBuster}` || '');
+    const blob = await profilePicture.blob();
+
     dispatch(setLoggedInRecently(true));
-    dispatch(setCurrentUser(user));
+    dispatch(setCurrentUser({...user, photoURL: URL.createObjectURL(blob)}));
     navigate('/home', {replace: true});
   }
 
